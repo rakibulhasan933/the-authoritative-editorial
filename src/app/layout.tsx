@@ -3,6 +3,7 @@ import { Figtree, Lora } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/ui/Navbar";
+import Footer from "@/components/footer";
 
 // ─── Fonts ────────────────────────────────────────────────────────────────────
 
@@ -79,7 +80,7 @@ export default function RootLayout({
         figtree.variable,
         lora.variable,
         // Base rendering
-        "h-full antialiased",
+        "h-full antialiased hydrated",
         // Scrollbar gutter prevents layout shift when scrollbar appears
         "overflow-y-scroll",
       )}
@@ -92,7 +93,7 @@ export default function RootLayout({
        * navbar stays white.
        */}
       <body className={cn(
-        "min-h-full flex flex-col",
+        "min-h-full  flex flex-col",
         "bg-white text-gray-900",
         "selection:bg-emerald-100 selection:text-emerald-900",
       )}>
@@ -121,7 +122,7 @@ export default function RootLayout({
             {children}
           </div>
         </main>
-
+        <Footer />
       </body>
     </html>
   );

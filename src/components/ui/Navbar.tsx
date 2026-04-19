@@ -604,9 +604,9 @@ export default function Navbar() {
                 <div className="flex items-center h-14 px-4 sm:px-5 lg:px-6 gap-0">
 
                     {/* Logo */}
-                    <Link href="/" className="flex-shrink-0 mr-4 font-bold text-[15px] tracking-tight text-gray-900">
-                        Search Engine{" "}
-                        <span className="text-emerald-500">Journal</span>
+                    <Link href="/" className="shrink-0 mr-4 font-bold text-[15px] tracking-tight text-gray-900">
+                        The Authoritative{" "}
+                        <span className="text-emerald-500">Editorial</span>
                     </Link>
 
                     {/* Desktop nav */}
