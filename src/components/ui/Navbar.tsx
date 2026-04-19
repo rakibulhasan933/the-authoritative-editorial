@@ -17,6 +17,7 @@ import {
     X,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { SearchDialog } from "../search-dialog";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -651,20 +652,7 @@ export default function Navbar() {
                             isMenuOpen ? "max-w-0 opacity-0 pointer-events-none" : "max-w-[80px] opacity-100"
                         )}
                     >
-                        <button
-                            type="button"
-                            aria-label="Newsletter"
-                            className="w-[34px] h-[34px] flex items-center justify-center rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors"
-                        >
-                            <Mail className="h-[15px] w-[15px]" />
-                        </button>
-                        <button
-                            type="button"
-                            aria-label="Search"
-                            className="w-[34px] h-[34px] flex items-center justify-center rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors"
-                        >
-                            <Search className="h-[15px] w-[15px]" />
-                        </button>
+                        <SearchDialog />
                     </div>
 
                     {/* Mobile: search + hamburger */}
