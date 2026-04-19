@@ -31,7 +31,7 @@ export default function Home() {
                             </div>
                         </div>
                     </div>
-                    <div className="bg-gradient-to-br from-accent to-accent/60 rounded-2xl aspect-square flex items-center justify-center overflow-hidden shadow-lg">
+                    <div className="bg-linear-to-br from-accent to-accent/60 rounded-2xl aspect-square flex items-center justify-center overflow-hidden shadow-lg">
                         <div className="w-full h-full bg-accent/40"></div>
                     </div>
                 </div>
