@@ -13,8 +13,6 @@ import {
     ChevronDown,
     Menu,
     X,
-    Moon,
-    Sun,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { SearchDialog } from "../search-dialog";
@@ -363,11 +361,11 @@ function LinkList({ links }: { links: NavLink[] }) {
                         <Link
                             href={link.href}
                             className={cn(
-                                "flex items-center gap-1.5 py-[4.5px] text-[12.5px] text-gray-600 hover:text-emerald-600 transition-colors leading-tight group",
+                                "flex items-center gap-1.5 py-[4.5px] text-[12.5px] text-muted-foreground hover:text-primary transition-colors leading-tight group",
                                 link.underline && "underline underline-offset-2"
                             )}
                         >
-                            {Icon && <Icon className="h-3 w-3 text-gray-400 group-hover:text-emerald-500 transition-colors shrink-0" />}
+                            {Icon && <Icon className="h-3 w-3 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />}
                             {link.label}
                         </Link>
                     </li>
@@ -378,12 +376,12 @@ function LinkList({ links }: { links: NavLink[] }) {
 }
 
 function VSep() {
-    return <div className="w-px self-stretch bg-gray-100 shrink-0" />;
+    return <div className="w-px self-stretch bg-border shrink-0" />;
 }
 
 function SectionLabel({ children, muted }: { children: React.ReactNode; muted?: boolean }) {
     return (
-        <p className={cn("text-[10px] font-bold tracking-widest uppercase mb-2.5", muted ? "text-gray-400" : "text-emerald-600")}>
+        <p className={cn("text-[10px] font-bold tracking-widest uppercase mb-2.5", muted ? "text-muted-foreground" : "text-primary")}>
             {children}
         </p>
     );
@@ -407,7 +405,7 @@ function MegaMenuContent({ menuId }: { menuId: string }) {
                                             key={s.label}
                                             title={s.label}
                                             type="button"
-                                            className="w-8 h-8 rounded-md bg-gray-100 hover:bg-emerald-50 hover:text-emerald-600 flex items-center justify-center text-[11px] font-bold text-gray-600 transition-colors border border-gray-200"
+                                            className="w-8 h-8 rounded-md bg-muted hover:bg-primary/10 hover:text-primary flex items-center justify-center text-[11px] font-bold text-muted-foreground transition-colors border border-border"
                                         >
                                             {s.char}
                                         </button>
@@ -517,10 +515,10 @@ function MobileAccordion({ id, label }: { id: string; label: string }) {
             <button
                 type="button"
                 onClick={() => setOpen((p) => !p)}
-                className="flex items-center justify-between w-full px-5 py-3 text-sm font-medium text-gray-900 hover:bg-gray-50 transition-colors"
+                className="flex items-center justify-between w-full px-5 py-3 text-sm font-medium text-foreground hover:bg-muted transition-colors"
             >
                 {label}
-                <ChevronDown className={cn("h-3.5 w-3.5 text-gray-400 transition-transform duration-200", open && "rotate-180")} />
+                <ChevronDown className={cn("h-3.5 w-3.5 text-muted-foreground transition-transform duration-200", open && "rotate-180")} />
             </button>
 
             <div
@@ -532,7 +530,7 @@ function MobileAccordion({ id, label }: { id: string; label: string }) {
                 {groups.map((g, gi) => (
                     <div key={gi}>
                         {g.label && (
-                            <p className="text-[10px] font-bold tracking-widest uppercase text-emerald-600 px-7 pt-2.5 pb-1">
+                            <p className="text-[10px] font-bold tracking-widest uppercase text-primary px-7 pt-2.5 pb-1">
                                 {g.label}
                             </p>
                         )}
@@ -541,7 +539,7 @@ function MobileAccordion({ id, label }: { id: string; label: string }) {
                                 <Link
                                     key={link.href}
                                     href={link.href}
-                                    className="block py-1.5 text-[13px] text-gray-600 border-b border-gray-100 last:border-0 hover:text-emerald-600 transition-colors"
+                                    className="block py-1.5 text-[13px] text-muted-foreground border-b border-border last:border-0 hover:text-primary transition-colors"
                                 >
                                     {link.label}
                                 </Link>
@@ -551,7 +549,7 @@ function MobileAccordion({ id, label }: { id: string; label: string }) {
                 ))}
             </div>
 
-            <div className="h-px bg-gray-100" />
+            <div className="h-px bg-border" />
         </div>
     );
 }
@@ -698,10 +696,10 @@ export default function Navbar() {
                     {NAV_ITEMS.map((item) =>
                         item.href ? (
                             <div key={item.id}>
-                                <Link href={item.href} className="flex items-center px-5 py-3 text-sm font-medium text-gray-900 hover:bg-gray-50 hover:text-emerald-600 transition-colors">
+                                <Link href={item.href} className="flex items-center px-5 py-3 text-sm font-medium text-foreground hover:bg-muted hover:text-primary transition-colors">
                                     {item.label}
                                 </Link>
-                                <div className="h-px bg-gray-100" />
+                                <div className="h-px bg-border" />
                             </div>
                         ) : (
                             <MobileAccordion key={item.id} id={item.id} label={item.label} />
@@ -709,7 +707,7 @@ export default function Navbar() {
                     )}
                     {/* Mobile actions */}
                     <div className="flex items-center gap-3 px-5 pt-3">
-                        <button type="button" className="flex items-center gap-1.5 text-[12.5px] text-gray-600 hover:text-emerald-600 transition-colors">
+                        <button type="button" className="flex items-center gap-1.5 text-[12.5px] text-muted-foreground hover:text-primary transition-colors">
                             <Mail className="h-3.5 w-3.5" /> Newsletter
                         </button>
                     </div>

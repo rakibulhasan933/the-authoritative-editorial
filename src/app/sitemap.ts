@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
 
-const BASE_URL = 'https://mumotravels.com';
+const BASE_URL = 'https://authoritativeeditorial.com';
 
 export default function sitemap(): MetadataRoute.Sitemap {
     // Main pages

@@ -174,8 +174,8 @@ export default function Home() {
                                 {/* Speaker */}
                                 <div className="flex items-center gap-2 pt-3 border-t border-border mb-4">
                                     <Image
-                                        width={48}
-                                        height={48}
+                                        width={28}
+                                        height={28}
                                         src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop"
                                         alt={webinar.speaker.name}
                                         className="w-8 h-8 rounded-full object-cover"

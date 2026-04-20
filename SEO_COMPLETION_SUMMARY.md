@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Your Momo Travels website has been comprehensively optimized for SEO and accessibility with enterprise-grade best practices. This document summarizes all completed improvements and their impact.
+Your The Authoritative Editorial website has been comprehensively optimized for SEO and accessibility with enterprise-grade best practices. This document summarizes all completed improvements and their impact.
 
 ---
 
@@ -266,7 +266,7 @@ import { BreadcrumbSchema } from "@/components/seo/schema-script";
 
 // 2. Define metadata
 export const metadata: Metadata = {
-  title: "Page Title | Momo Travels",
+  title: "Page Title | The Authoritative Editorial",
   description: "150-160 character description...",
   // ... other metadata
 };

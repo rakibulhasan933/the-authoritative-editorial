@@ -12,17 +12,17 @@ Use this template for all new pages:
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Page Title | Momo Travels",
+  title: "Page Title | The Authoritative Editorial",
   description: "Concise description of page content, ideally 150-160 characters.",
   keywords: ["keyword1", "keyword2", "keyword3"],
   openGraph: {
-    title: "Page Title | Momo Travels",
+    title: "Page Title | The Authoritative Editorial",
     description: "Concise description...",
     type: "website",
-    url: "https://mumotravels.com/page-slug",
+    url: "https://authoritativeeditorial.com/page-slug",
     images: [
       {
-        url: "https://mumotravels.com/og-image.png",
+        url: "https://authoritativeeditorial.com/og-image.png",
         width: 1200,
         height: 630,
         alt: "Image description",
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     ],
   },
   alternates: {
-    canonical: "https://mumotravels.com/page-slug",
+    canonical: "https://authoritativeeditorial.com/page-slug",
   },
 };
 
@@ -113,7 +113,7 @@ import { AccessibleHeading } from "@/components/seo/accessible-heading";
 ### Footer
 ```tsx
 <footer role="contentinfo" aria-label="Site footer">
-  <p>&copy; 2024 Momo Travels. All rights reserved.</p>
+  <p>&copy; 2024 The Authoritative Editorial. All rights reserved.</p>
 </footer>
 ```
 
@@ -126,9 +126,9 @@ import { AccessibleHeading } from "@/components/seo/accessible-heading";
 import { OrganizationSchema } from "@/components/seo/schema-script";
 
 <OrganizationSchema
-  name="Momo Travels"
-  url="https://mumotravels.com"
-  logo="https://mumotravels.com/logo.png"
+  name="The Authoritative Editorial"
+  url="https://authoritativeeditorial.com"
+  logo="https://authoritativeeditorial.com/logo.png"
 />
 ```
 
@@ -138,9 +138,9 @@ import { BreadcrumbSchema } from "@/components/seo/schema-script";
 
 <BreadcrumbSchema
   items={[
-    { name: "Home", url: "https://mumotravels.com" },
-    { name: "Blog", url: "https://mumotravels.com/blogs" },
-    { name: "Article Title", url: "https://mumotravels.com/blog/slug" },
+    { name: "Home", url: "https://authoritativeeditorial.com" },
+    { name: "Blog", url: "https://authoritativeeditorial.com/blogs" },
+    { name: "Article Title", url: "https://authoritativeeditorial.com/blog/slug" },
   ]}
 />
 ```
@@ -152,7 +152,7 @@ import { ArticleSchema } from "@/components/seo/schema-script";
 <ArticleSchema
   title="Article Title"
   description="Short article description"
-  image="https://mumotravels.com/article-image.png"
+  image="https://authoritativeeditorial.com/article-image.png"
   author="Author Name"
   publishedDate="2024-01-15T00:00:00Z"
   modifiedDate="2024-01-20T00:00:00Z"

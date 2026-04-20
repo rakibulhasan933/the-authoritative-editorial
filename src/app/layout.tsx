@@ -34,11 +34,11 @@ const lora = Lora({
 
 export const metadata: Metadata = {
   title: {
-    default: "Momo Travels | SEO & Travel Insights",
-    template: "%s | Momo Travels",
+    default: "The Authoritative Editorial | SEO & Travel Insights",
+    template: "%s | The Authoritative Editorial",
   },
   description:
-    "Discover comprehensive SEO insights, travel guides, and expert webinars to boost your online visibility. Join thousands of digital marketers learning with Momo Travels.",
+    "Discover comprehensive SEO insights, travel guides, and expert webinars to boost your online visibility. Join thousands of digital marketers learning with The Authoritative Editorial.",
   keywords: [
     "SEO",
     "travel guides",
@@ -48,36 +48,36 @@ export const metadata: Metadata = {
     "content marketing",
     "travel insights",
   ],
-  metadataBase: new URL("https://mumotravels.com"),
+  metadataBase: new URL("https://authoritativeeditorial.com"),
   alternates: {
-    canonical: "https://mumotravels.com",
+    canonical: "https://authoritativeeditorial.com",
   },
   openGraph: {
     type: "website",
-    siteName: "Momo Travels",
+    siteName: "The Authoritative Editorial",
     locale: "en_US",
-    url: "https://mumotravels.com",
-    title: "Momo Travels | SEO & Travel Insights",
+    url: "https://authoritativeeditorial.com",
+    title: "The Authoritative Editorial | SEO & Travel Insights",
     description:
       "Discover comprehensive SEO insights, travel guides, and expert webinars to boost your online visibility.",
     images: [
       {
-        url: "https://mumotravels.com/og-image.png",
+        url: "https://authoritativeeditorial.com/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Momo Travels - SEO and Travel Insights",
+        alt: "The Authoritative Editorial - SEO and Travel Insights",
         type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    site: "@mumotravels",
-    creator: "@mumotravels",
-    title: "Momo Travels | SEO & Travel Insights",
+    site: "@authoritativeeditorial",
+    creator: "@authoritativeeditorial",
+    title: "The Authoritative Editorial | SEO & Travel Insights",
     description:
       "Discover comprehensive SEO insights, travel guides, and expert webinars to boost your online visibility.",
-    images: ["https://mumotravels.com/og-image.png"],
+    images: ["https://authoritativeeditorial.com/og-image.png"],
   },
   robots: {
     index: true,
