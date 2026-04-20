@@ -1,5 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { ArrowRight, Calendar, Clock, Users } from 'lucide-react';
+import Link from 'next/link';
 
 export default function Home() {
 
@@ -13,7 +15,7 @@ export default function Home() {
                         <div className="inline-block">
                             <span className="text-xs text-emerald-500 uppercase tracking-widest  font-semibold">Featured Insight</span>
                         </div>
-                        <h2 className="text-5xl md:text-6xl font-serif font-bold leading-tight text-foreground">
+                        <h2 className="text-5xl md:text-6xl  font-bold leading-tight text-foreground">
                             The Core Web Vitals Paradigm Shift
                         </h2>
                         <p className="text-lg text-muted-foreground leading-relaxed">
@@ -40,10 +42,10 @@ export default function Home() {
             {/* Actionable Strategies Section */}
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
                 <div className="flex items-center justify-between mb-12">
-                    <h3 className="text-4xl font-serif font-bold text-foreground">Actionable Strategies</h3>
-                    <a href="#" className="text-emerald-500 font-medium hover:underline flex items-center gap-2">
-                        View All →
-                    </a>
+                    <h3 className="text-4xl  font-bold text-foreground">Actionable Strategies</h3>
+                    <Link href="#" className="text-emerald-500 font-medium hover:underline flex items-center gap-2">
+                        View All
+                    </Link>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {[
@@ -65,7 +67,7 @@ export default function Home() {
                         <Card key={idx} className="p-8 border border-border hover:shadow-lg hover:border-accent/30 transition-all">
                             <div className="space-y-4">
                                 <span className="text-xs uppercase tracking-widest text-emerald-500 font-semibold">{item.category}</span>
-                                <h4 className="text-2xl font-serif font-bold text-foreground">{item.title}</h4>
+                                <h4 className="text-2xl  font-bold text-foreground">{item.title}</h4>
                                 <p className="text-foreground/70 leading-relaxed">{item.description}</p>
                                 <div className="flex items-center gap-4 text-sm text-muted-foreground">
                                     <span>{item.date}</span>
@@ -77,12 +79,128 @@ export default function Home() {
                     ))}
                 </div>
             </section>
+            {/* Featured Webinars Section */}
+            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div className="flex items-center justify-between mb-12">
+                    <h3 className="text-4xl  font-bold text-foreground">Live & On-Demand Webinars</h3>
+                    <Link href="/webinars" className="text-primary font-medium hover:underline flex items-center gap-2">
+                        View All
+                    </Link>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {[
+                        {
+                            id: 1,
+                            title: 'Deconstructing Google\'s Helpful Content Ecosystem',
+                            description: 'A rigorous analysis of recent patent updates and algorithm shifts targeting information gain and topical authority.',
+                            date: 'Oct 24, 2024',
+                            time: '10:00 AM EST',
+                            duration: '60 min',
+                            attendees: 847,
+                            category: 'Technical SEO',
+                            speaker: { name: 'Dr. Elias Vance', title: 'Head Data Scientist' },
+                            image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop'
+                        },
+                        {
+                            id: 2,
+                            title: 'The Entity Graph: Beyond Keyword Targeting',
+                            description: 'Learn how to map editorial strategy to Google\'s Knowledge Graph, establishing your brand as a definitive entity.',
+                            date: 'Nov 02, 2024',
+                            time: '2:00 PM EST',
+                            duration: '45 min',
+                            attendees: 623,
+                            category: 'Content Strategy',
+                            speaker: { name: 'Marcus Vance', title: 'Principal Strategist' },
+                            image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop'
+                        },
+                        {
+                            id: 3,
+                            title: 'Core Web Vitals in 2024: The Lab vs. Field Data Paradox',
+                            description: 'Understanding the divergence between synthetic metrics and real-world performance, and why your current optimization might be incorrect.',
+                            date: 'Nov 15, 2024',
+                            time: '1:00 PM EST',
+                            duration: '50 min',
+                            attendees: 521,
+                            category: 'AI & Search',
+                            speaker: { name: 'Sarah Jenkins', title: 'Technical Lead' },
+                            image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop'
+                        }
+                    ].map((webinar) => (
+                        <Card key={webinar.id} className="overflow-hidden border border-border hover:border-primary/50 hover:shadow-lg transition-all duration-300 group">
+                            {/* Image */}
+                            <div className="relative h-40 overflow-hidden bg-gradient-to-br from-muted to-secondary">
+                                <img
+                                    src={webinar.image}
+                                    alt={webinar.title}
+                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                />
+                                <div className="absolute top-3 right-3">
+                                    <span className="inline-block bg-primary text-primary-foreground text-xs font-semibold px-3 py-1 rounded-full">
+                                        {webinar.category}
+                                    </span>
+                                </div>
+                            </div>
+
+                            {/* Content */}
+                            <div className="p-5">
+                                <h4 className=" text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                                    {webinar.title}
+                                </h4>
+                                <p className="text-sm text-foreground/70 mb-3 line-clamp-2 leading-relaxed">
+                                    {webinar.description}
+                                </p>
+
+                                {/* Date & Time */}
+                                <div className="space-y-1 mb-3 pt-3 border-t border-border text-xs text-foreground/60">
+                                    <div className="flex items-center gap-2">
+                                        <Calendar className="w-3.5 h-3.5" />
+                                        <span>{webinar.date}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <Clock className="w-3.5 h-3.5" />
+                                        <span>{webinar.time} • {webinar.duration}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <Users className="w-3.5 h-3.5" />
+                                        <span>{webinar.attendees.toLocaleString()} registered</span>
+                                    </div>
+                                </div>
+
+                                {/* Speaker */}
+                                <div className="flex items-center gap-2 pt-3 border-t border-border mb-4">
+                                    <img
+                                        src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop"
+                                        alt={webinar.speaker.name}
+                                        className="w-8 h-8 rounded-full object-cover"
+                                    />
+                                    <div className="flex-1 min-w-0">
+                                        <p className="font-medium text-xs text-foreground truncate">
+                                            {webinar.speaker.name}
+                                        </p>
+                                        <p className="text-xs text-foreground/60 truncate">
+                                            {webinar.speaker.title}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Register Button */}
+                                <Link href="/webinars">
+                                    <Button className="w-full group/btn bg-emerald-300 hover:bg-emerald-500 rounded-lg text-sm">
+                                        Secure Seat
+                                        <ArrowRight className="w-3.5 h-3.5 ml-1.5 group-hover/btn:translate-x-1 transition-transform" />
+                                    </Button>
+                                </Link>
+                            </div>
+                        </Card>
+                    ))}
+                </div>
+            </section>
 
             {/* Two Column Layout */}
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid grid-cols-1 lg:grid-cols-3 gap-12">
                 {/* Expert Columns */}
                 <div className="lg:col-span-2">
-                    <h3 className="text-3xl font-serif font-bold text-foreground mb-8">Technical Briefs</h3>
+                    <h3 className="text-3xl  font-bold text-foreground mb-8">Technical Briefs</h3>
                     <div className="space-y-8">
                         {[
                             {
@@ -101,7 +219,7 @@ export default function Home() {
                             <div key={idx} className="pb-8 border-b border-border last:border-b-0">
                                 <div className="space-y-3">
                                     <span className="text-xs uppercase tracking-widest text-emerald-500 font-semibold">{item.category}</span>
-                                    <h4 className="text-2xl font-serif font-bold text-foreground">{item.title}</h4>
+                                    <h4 className="text-2xl font-bold text-foreground">{item.title}</h4>
                                     <p className="text-foreground/70">{item.description}</p>
                                     <div className="flex items-center gap-4 text-sm text-muted-foreground pt-2">
                                         <span>{item.date}</span>
@@ -116,7 +234,7 @@ export default function Home() {
                 <div className="space-y-8">
                     {/* Expert Columns Widget */}
                     <div>
-                        <h4 className="text-2xl font-serif font-bold text-foreground mb-6">Expert Columns</h4>
+                        <h4 className="text-2xl font-bold text-foreground mb-6">Expert Columns</h4>
                         <div className="space-y-6">
                             {[
                                 {
@@ -141,7 +259,7 @@ export default function Home() {
 
                     {/* Newsletter Signup */}
                     <Card className="p-6 border border-accent/20 bg-accent/5">
-                        <h5 className="text-lg font-serif font-bold text-foreground mb-3">The Briefing</h5>
+                        <h5 className="text-lg font-bold text-foreground mb-3">The Briefing</h5>
                         <p className="text-sm text-foreground/70 mb-4">
                             Join 15,000+ professionals receiving our weekly analysis of search trends.
                         </p>
