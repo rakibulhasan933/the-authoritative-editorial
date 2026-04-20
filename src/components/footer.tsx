@@ -53,7 +53,7 @@ export default function Footer() {
                 </nav>
 
                 <div className="border-t border-border pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-                    <p>&copy; {currentYear} Momo Travels. All rights reserved.</p>
+                    <p>&copy; {currentYear} The Authoritative Editorial. All rights reserved.</p>
                     <nav className="flex items-center gap-6 text-xs" aria-label="Footer legal links">
                         <Link href="/privacy" className="text-muted-foreground hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary rounded px-1">Privacy</Link>
                         <Link href="/terms" className="text-muted-foreground hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary rounded px-1">Terms</Link>

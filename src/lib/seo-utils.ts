@@ -106,9 +106,9 @@ export const createOrganizationSchema = (orgName: string, orgUrl: string, logoUr
         url: orgUrl,
         logo: logoUrl,
         sameAs: [
-            'https://www.linkedin.com/company/mumotravels',
-            'https://twitter.com/mumotravels',
-            'https://www.instagram.com/mumotravels',
+            'https://www.linkedin.com/company/authoritativeeditorial',
+            'https://twitter.com/authoritativeeditorial',
+            'https://www.instagram.com/authoritativeeditorial',
         ],
     };
 };

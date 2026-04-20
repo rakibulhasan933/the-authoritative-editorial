@@ -3,9 +3,9 @@ import Hero from "@/components/hero";
 import { OrganizationSchema, BreadcrumbSchema } from "@/components/seo/schema-script";
 
 export const metadata: Metadata = {
-  title: "Momo Travels | SEO & Travel Insights Home",
+  title: "The Authoritative Editorial | SEO & Travel Insights Home",
   description:
-    "Welcome to Momo Travels. Discover cutting-edge SEO strategies, travel insights, and expert-led webinars. Join our community of digital marketers and travel enthusiasts today.",
+    "Welcome to The Authoritative Editorial. Discover cutting-edge SEO strategies, travel insights, and expert-led webinars. Join our community of digital marketers and travel enthusiasts today.",
   keywords: [
     "SEO",
     "travel",
@@ -17,22 +17,22 @@ export const metadata: Metadata = {
     "search engine optimization",
   ],
   openGraph: {
-    title: "Momo Travels | SEO & Travel Insights",
+    title: "The Authoritative Editorial | SEO & Travel Insights",
     description:
-      "Welcome to Momo Travels. Discover cutting-edge SEO strategies, travel insights, and expert-led webinars.",
+      "Welcome to The Authoritative Editorial. Discover cutting-edge SEO strategies, travel insights, and expert-led webinars.",
     type: "website",
-    url: "https://mumotravels.com",
+    url: "https://authoritativeeditorial.com",
     images: [
       {
-        url: "https://mumotravels.com/og-home.png",
+        url: "https://authoritativeeditorial.com/og-home.png",
         width: 1200,
         height: 630,
-        alt: "Momo Travels Home",
+        alt: "The Authoritative Editorial Home",
       },
     ],
   },
   alternates: {
-    canonical: "https://mumotravels.com",
+    canonical: "https://authoritativeeditorial.com",
   },
 };
 
@@ -41,12 +41,12 @@ export default function Home() {
     <>
       {/* ── Organization and Breadcrumb Schema ── */}
       <OrganizationSchema
-        name="Momo Travels"
-        url="https://mumotravels.com"
-        logo="https://mumotravels.com/logo.png"
+        name="The Authoritative Editorial"
+        url="https://authoritativeeditorial.com"
+        logo="https://authoritativeeditorial.com/logo.png"
       />
       <BreadcrumbSchema
-        items={[{ name: "Home", url: "https://mumotravels.com" }]}
+        items={[{ name: "Home", url: "https://authoritativeeditorial.com" }]}
       />
 
       {/* ── Main content ── */}

@@ -22,10 +22,10 @@ export const metadata: Metadata = {
         description:
             "Explore our comprehensive blog archive featuring expert insights on SEO and digital marketing.",
         type: "website",
-        url: "https://mumotravels.com/blogs",
+        url: "https://authoritativeeditorial.com/blogs",
         images: [
             {
-                url: "https://mumotravels.com/og-blogs.png",
+                url: "https://authoritativeeditorial.com/og-blogs.png",
                 width: 1200,
                 height: 630,
                 alt: "Blog Archives",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
         ],
     },
     alternates: {
-        canonical: "https://mumotravels.com/blogs",
+        canonical: "https://authoritativeeditorial.com/blogs",
     },
 };
 
@@ -174,8 +174,8 @@ export default function BlogsPage() {
             {/* ── Breadcrumb Schema ── */}
             <BreadcrumbSchema
                 items={[
-                    { name: "Home", url: "https://mumotravels.com" },
-                    { name: "Blog", url: "https://mumotravels.com/blogs" },
+                    { name: "Home", url: "https://authoritativeeditorial.com" },
+                    { name: "Blog", url: "https://authoritativeeditorial.com/blogs" },
                 ]}
             />
 

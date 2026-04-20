@@ -39,9 +39,9 @@ export function OrganizationSchema({
         url,
         ...(logo && { logo }),
         sameAs: [
-            'https://www.linkedin.com/company/mumotravels',
-            'https://twitter.com/mumotravels',
-            'https://www.instagram.com/mumotravels',
+            'https://www.linkedin.com/company/authoritativeeditorial',
+            'https://twitter.com/authoritativeeditorial',
+            'https://www.instagram.com/authoritativeeditorial',
         ],
     };
 

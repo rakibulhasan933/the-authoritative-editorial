@@ -1,6 +1,6 @@
 # SEO Implementation Guide
 
-This document outlines all SEO optimizations, accessibility features, and best practices implemented in the Momo Travels website.
+This document outlines all SEO optimizations, accessibility features, and best practices implemented in the The Authoritative Editorial website.
 
 ---
 
@@ -25,9 +25,9 @@ This document outlines all SEO optimizations, accessibility features, and best p
 - **Sitemaps**: References to main, blogs, and webinars sitemaps
 
 ```
-Sitemap: https://mumotravels.com/sitemap.xml
-Sitemap: https://mumotravels.com/sitemap-blogs.xml
-Sitemap: https://mumotravels.com/sitemap-webinars.xml
+Sitemap: https://authoritativeeditorial.com/sitemap.xml
+Sitemap: https://authoritativeeditorial.com/sitemap-blogs.xml
+Sitemap: https://authoritativeeditorial.com/sitemap-webinars.xml
 ```
 
 ### Dynamic Sitemap Generation
@@ -83,8 +83,8 @@ Each major page has its own metadata configuration:
 #### Home Page (`/src/app/page.tsx`)
 ```typescript
 export const metadata: Metadata = {
-  title: "Momo Travels | SEO & Travel Insights Home",
-  description: "Welcome to Momo Travels. Discover cutting-edge SEO strategies...",
+  title: "The Authoritative Editorial | SEO & Travel Insights Home",
+  description: "Welcome to The Authoritative Editorial. Discover cutting-edge SEO strategies...",
   // Additional metadata...
 }
 ```
@@ -113,9 +113,9 @@ export const metadata: Metadata = {
 **Organization Schema**:
 ```tsx
 <OrganizationSchema
-  name="Momo Travels"
-  url="https://mumotravels.com"
-  logo="https://mumotravels.com/logo.png"
+  name="The Authoritative Editorial"
+  url="https://authoritativeeditorial.com"
+  logo="https://authoritativeeditorial.com/logo.png"
 />
 ```
 
@@ -123,8 +123,8 @@ export const metadata: Metadata = {
 ```tsx
 <BreadcrumbSchema
   items={[
-    { name: "Home", url: "https://mumotravels.com" },
-    { name: "Blog", url: "https://mumotravels.com/blogs" },
+    { name: "Home", url: "https://authoritativeeditorial.com" },
+    { name: "Blog", url: "https://authoritativeeditorial.com/blogs" },
   ]}
 />
 ```
@@ -134,7 +134,7 @@ export const metadata: Metadata = {
 <ArticleSchema
   title="Article Title"
   description="Article description"
-  image="https://mumotravels.com/article-image.png"
+  image="https://authoritativeeditorial.com/article-image.png"
   author="Author Name"
   publishedDate="2024-01-01T00:00:00Z"
   modifiedDate="2024-01-15T00:00:00Z"
