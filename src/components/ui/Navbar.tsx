@@ -13,10 +13,20 @@ import {
     ChevronDown,
     Menu,
     X,
+    Sun,
+    Moon,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { SearchDialog } from "../search-dialog";
 import React, { useEffect } from "react";
+import { useTheme } from "next-themes"
+import { Button } from "@/components/ui/button"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -719,71 +729,27 @@ export default function Navbar() {
 
 // ─── Theme Toggle Button ─────────────────────────────────────────────────────
 function ThemeToggle() {
-    const [isDark, setIsDark] = React.useState<boolean>(
-        typeof document !== "undefined" && document.documentElement.classList.contains("dark")
-    );
-
-    const handleThemeChange = (): void => {
-        const html = document.documentElement;
-        const newIsDark = !isDark;
-        html.classList[newIsDark ? "add" : "remove"]("dark");
-        localStorage.setItem("theme", newIsDark ? "dark" : "light");
-        setIsDark(newIsDark);
-    };
-
-    // Render with server-side initial value (false) to match SSR output
-    // mounted flag ensures we don't show wrong icon briefly
+    const { setTheme } = useTheme()
     return (
-        <button
-            type="button"
-            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-            onClick={handleThemeChange}
-            className="w-9 h-9 flex items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
-            suppressHydrationWarning
-        >
-            {isDark ? (
-                // Sun SVG for light mode
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width={24}
-                    height={24}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="lucide lucide-sun h-4 w-4"
-                    aria-hidden="true"
-                >
-                    <circle cx="12" cy="12" r="4" />
-                    <path d="M12 2v2" />
-                    <path d="M12 20v2" />
-                    <path d="m4.93 4.93 1.41 1.41" />
-                    <path d="m17.66 17.66 1.41 1.41" />
-                    <path d="M2 12h2" />
-                    <path d="M20 12h2" />
-                    <path d="m6.34 17.66-1.41 1.41" />
-                    <path d="m19.07 4.93-1.41 1.41" />
-                </svg>
-            ) : (
-                // Moon SVG for dark mode
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width={24}
-                    height={24}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="lucide lucide-moon h-4 w-4"
-                    aria-hidden="true"
-                >
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                </svg>
-            )}
-        </button>
-    );
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="icon">
+                    <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+                    <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+                    <span className="sr-only">Toggle theme</span>
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => setTheme("light")}>
+                    Light
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setTheme("dark")}>
+                    Dark
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setTheme("system")}>
+                    System
+                </DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenu>
+    )
 }

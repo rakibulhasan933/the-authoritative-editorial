@@ -140,17 +140,12 @@ export default function RootLayout({
         "bg-background text-foreground",
         "selection:bg-primary/20 selection:text-foreground",
       )}>
-        <ThemeProvider>
-          {/* ── Skip to content link for accessibility ── */}
-          <a
-            href="#main-content"
-            className="sr-only focus:not-sr-only focus:fixed focus:top-0 focus:left-0 focus:z-50 focus:bg-primary focus:text-primary-foreground focus:px-4 focus:py-2"
-            aria-label="Skip to main content"
-          >
-            Skip to main content
-          </a>
-
-          {/* ── Top navigation ── */}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           <Navbar />
 
           {/*
