@@ -197,33 +197,31 @@ export default function Home() {
             </section>
 
             {/* Two Column Layout */}
-            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid grid-cols-1 lg:grid-cols-3 gap-12">
+            <section className="max-w-7xl mx-auto px-4 sm:px-2 lg:px-8 py-4 grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Expert Columns */}
                 <div className="lg:col-span-2">
-                    <h3 className="text-3xl  font-bold text-foreground mb-8">Technical Briefs</h3>
-                    <div className="space-y-8">
+                    <Link href="/briefs" className="text-emerald-500 font-medium hover:underline flex items-center gap-2 mb-1">
+                        <h3 className="text-3xl  font-bold text-foreground mb-3">Technical Briefs</h3>
+                    </Link>
+                    <div className="space-y-2">
                         {[
                             {
                                 title: 'Migrating to Next.js: The Pre-rendering Checklist for SEO',
                                 category: 'Architecture',
                                 date: 'Oct 01',
                                 description: 'Client-side rendering pitfalls continue to plague enterprise migrations. Here is the definitive checklist for ensuring your JS framework doesn\'t tank your crawl budget.'
-                            },
-                            {
-                                title: 'Advanced Schema.org Nesting: Building Relationships',
-                                category: 'Markup',
-                                date: 'Sep 28',
-                                description: 'Don\'t just add LocalBusiness markup. Learn how to nest Review, Offer, and Organization schemas to provide search engines with a comprehensive data entity.'
                             }
                         ].map((item, idx) => (
-                            <div key={idx} className="pb-8 border-b border-border last:border-b-0">
+                            <div key={idx} className="pb-2 border-b border-border last:border-b-0">
                                 <div className="space-y-3">
-                                    <span className="text-xs uppercase tracking-widest text-emerald-500 font-semibold">{item.category}</span>
-                                    <h4 className="text-2xl font-bold text-foreground">{item.title}</h4>
-                                    <p className="text-foreground/70">{item.description}</p>
-                                    <div className="flex items-center gap-4 text-sm text-muted-foreground pt-2">
-                                        <span>{item.date}</span>
-                                    </div>
+                                    <Link href={item.category} className='group'>
+                                        <span className="text-xs uppercase tracking-widest text-emerald-500 font-semibold">{item.category}</span>
+                                        <h4 className="text-2xl font-bold group-hover:text-emerald-500 text-foreground">{item.title}</h4>
+                                        <p className="text-foreground/70">{item.description}</p>
+                                        <div className="flex items-center gap-4 text-sm text-muted-foreground pt-2">
+                                            <span>{item.date}</span>
+                                        </div>
+                                    </Link>
                                 </div>
                             </div>
                         ))}
@@ -231,21 +229,15 @@ export default function Home() {
                 </div>
 
                 {/* Sidebar */}
-                <div className="space-y-8">
+                <div className="space-y-4">
                     {/* Expert Columns Widget */}
                     <div>
-                        <h4 className="text-2xl font-bold text-foreground mb-6">Expert Columns</h4>
                         <div className="space-y-6">
                             {[
                                 {
                                     name: 'Sarah Jenkins',
                                     title: 'Why SEO\'s Dead and Search Experience is the Future',
                                     label: 'The E-Suite View'
-                                },
-                                {
-                                    name: 'Marcus Chen',
-                                    title: 'Deconstructing the Latest Helpful Content Update Signals',
-                                    label: 'Algorithm Watch'
                                 }
                             ].map((expert, idx) => (
                                 <div key={idx} className="p-4 rounded-lg bg-muted/30 border border-border hover:border-accent/30 transition-colors cursor-pointer">
@@ -256,26 +248,226 @@ export default function Home() {
                             ))}
                         </div>
                     </div>
-
-                    {/* Newsletter Signup */}
-                    <Card className="p-6 border border-accent/20 bg-accent/5">
-                        <h5 className="text-lg font-bold text-foreground mb-3">The Briefing</h5>
-                        <p className="text-sm text-foreground/70 mb-4">
-                            Join 15,000+ professionals receiving our weekly analysis of search trends.
-                        </p>
-                        <div className="space-y-3">
-                            <input
-                                type="email"
-                                placeholder="Your work email"
-                                className="w-full px-4 py-2 rounded-lg border border-border bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent"
-                            />
-                            <Button className="w-full bg-foreground text-background hover:bg-foreground/90">
-                                Subscribe Now
-                            </Button>
-                        </div>
-                    </Card>
                 </div>
             </section>
+            {/* Two Column Layout */}
+            <section className="max-w-7xl mx-auto px-4 sm:px-2 lg:px-8 py-4 grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Expert Columns */}
+                <div className="lg:col-span-2">
+                    <Link href="/briefs" className="text-emerald-500 font-medium hover:underline flex items-center gap-2 mb-1">
+                        <h3 className="text-3xl  font-bold text-foreground mb-3">Social Media</h3>
+                    </Link>
+                    <div className="space-y-2">
+                        {[
+                            {
+                                title: 'Migrating to Next.js: The Pre-rendering Checklist for SEO',
+                                category: 'Architecture',
+                                date: 'Oct 01',
+                                description: 'Client-side rendering pitfalls continue to plague enterprise migrations. Here is the definitive checklist for ensuring your JS framework doesn\'t tank your crawl budget.'
+                            }
+                        ].map((item, idx) => (
+                            <div key={idx} className="pb-2 border-b border-border last:border-b-0">
+                                <div className="space-y-3">
+                                    <Link href={item.category} className='group'>
+                                        <span className="text-xs uppercase tracking-widest text-emerald-500 font-semibold">{item.category}</span>
+                                        <h4 className="text-2xl font-bold group-hover:text-emerald-500 text-foreground">{item.title}</h4>
+                                        <p className="text-foreground/70">{item.description}</p>
+                                        <div className="flex items-center gap-4 text-sm text-muted-foreground pt-2">
+                                            <span>{item.date}</span>
+                                        </div>
+                                    </Link>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Sidebar */}
+                <div className="space-y-4">
+                    {/* Expert Columns Widget */}
+                    <div>
+                        <div className="space-y-6">
+                            {[
+                                {
+                                    name: 'Sarah Jenkins',
+                                    title: 'Why SEO\'s Dead and Search Experience is the Future',
+                                    label: 'The E-Suite View'
+                                }
+                            ].map((expert, idx) => (
+                                <div key={idx} className="p-4 rounded-lg bg-muted/30 border border-border hover:border-accent/30 transition-colors cursor-pointer">
+                                    <p className="text-xs uppercase tracking-widest text-emerald-500 font-semibold mb-2">{expert.label}</p>
+                                    <p className="text-sm font-semibold text-foreground mb-1">{expert.title}</p>
+                                    <p className="text-xs text-muted-foreground">{expert.name}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </section>
+            {/* Two Column Layout */}
+            <section className="max-w-7xl mx-auto px-4 sm:px-2 lg:px-8 py-4 grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Expert Columns */}
+                <div className="lg:col-span-2">
+                    <Link href="/briefs" className="text-emerald-500 font-medium hover:underline flex items-center gap-2 mb-1">
+                        <h3 className="text-3xl  font-bold text-foreground mb-3">Content</h3>
+                    </Link>
+                    <div className="space-y-2">
+                        {[
+                            {
+                                title: 'Migrating to Next.js: The Pre-rendering Checklist for SEO',
+                                category: 'Architecture',
+                                date: 'Oct 01',
+                                description: 'Client-side rendering pitfalls continue to plague enterprise migrations. Here is the definitive checklist for ensuring your JS framework doesn\'t tank your crawl budget.'
+                            }
+                        ].map((item, idx) => (
+                            <div key={idx} className="pb-2 border-b border-border last:border-b-0">
+                                <div className="space-y-3">
+                                    <Link href={item.category} className='group'>
+                                        <span className="text-xs uppercase tracking-widest text-emerald-500 font-semibold">{item.category}</span>
+                                        <h4 className="text-2xl font-bold group-hover:text-emerald-500 text-foreground">{item.title}</h4>
+                                        <p className="text-foreground/70">{item.description}</p>
+                                        <div className="flex items-center gap-4 text-sm text-muted-foreground pt-2">
+                                            <span>{item.date}</span>
+                                        </div>
+                                    </Link>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Sidebar */}
+                <div className="space-y-4">
+                    {/* Expert Columns Widget */}
+                    <div>
+                        <div className="space-y-6">
+                            {[
+                                {
+                                    name: 'Sarah Jenkins',
+                                    title: 'Why SEO\'s Dead and Search Experience is the Future',
+                                    label: 'The E-Suite View'
+                                }
+                            ].map((expert, idx) => (
+                                <div key={idx} className="p-4 rounded-lg bg-muted/30 border border-border hover:border-accent/30 transition-colors cursor-pointer">
+                                    <p className="text-xs uppercase tracking-widest text-emerald-500 font-semibold mb-2">{expert.label}</p>
+                                    <p className="text-sm font-semibold text-foreground mb-1">{expert.title}</p>
+                                    <p className="text-xs text-muted-foreground">{expert.name}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </section>
+            {/* Two Column Layout */}
+            <section className="max-w-7xl mx-auto px-4 sm:px-2 lg:px-8 py-4 grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Expert Columns */}
+                <div className="lg:col-span-2">
+                    <Link href="/briefs" className="text-emerald-500 font-medium hover:underline flex items-center gap-2 mb-1">
+                        <h3 className="text-3xl  font-bold text-foreground mb-3">Paid Media</h3>
+                    </Link>
+                    <div className="space-y-2">
+                        {[
+                            {
+                                title: 'Migrating to Next.js: The Pre-rendering Checklist for SEO',
+                                category: 'Architecture',
+                                date: 'Oct 01',
+                                description: 'Client-side rendering pitfalls continue to plague enterprise migrations. Here is the definitive checklist for ensuring your JS framework doesn\'t tank your crawl budget.'
+                            }
+                        ].map((item, idx) => (
+                            <div key={idx} className="pb-2 border-b border-border last:border-b-0">
+                                <div className="space-y-3">
+                                    <Link href={item.category} className='group'>
+                                        <span className="text-xs uppercase tracking-widest text-emerald-500 font-semibold">{item.category}</span>
+                                        <h4 className="text-2xl font-bold group-hover:text-emerald-500 text-foreground">{item.title}</h4>
+                                        <p className="text-foreground/70">{item.description}</p>
+                                        <div className="flex items-center gap-4 text-sm text-muted-foreground pt-2">
+                                            <span>{item.date}</span>
+                                        </div>
+                                    </Link>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Sidebar */}
+                <div className="space-y-4">
+                    {/* Expert Columns Widget */}
+                    <div>
+                        <div className="space-y-6">
+                            {[
+                                {
+                                    name: 'Sarah Jenkins',
+                                    title: 'Why SEO\'s Dead and Search Experience is the Future',
+                                    label: 'The E-Suite View'
+                                }
+                            ].map((expert, idx) => (
+                                <div key={idx} className="p-4 rounded-lg bg-muted/30 border border-border hover:border-accent/30 transition-colors cursor-pointer">
+                                    <p className="text-xs uppercase tracking-widest text-emerald-500 font-semibold mb-2">{expert.label}</p>
+                                    <p className="text-sm font-semibold text-foreground mb-1">{expert.title}</p>
+                                    <p className="text-xs text-muted-foreground">{expert.name}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </section>
+            {/* Two Column Layout */}
+            <section className="max-w-7xl mx-auto px-4 sm:px-2 lg:px-8 py-4 grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Expert Columns */}
+                <div className="lg:col-span-2">
+                    <Link href="/briefs" className="text-emerald-500 font-medium hover:underline flex items-center gap-2 mb-1">
+                        <h3 className="text-3xl  font-bold text-foreground mb-3">SEO</h3>
+                    </Link>
+                    <div className="space-y-2">
+                        {[
+                            {
+                                title: 'Migrating to Next.js: The Pre-rendering Checklist for SEO',
+                                category: 'Architecture',
+                                date: 'Oct 01',
+                                description: 'Client-side rendering pitfalls continue to plague enterprise migrations. Here is the definitive checklist for ensuring your JS framework doesn\'t tank your crawl budget.'
+                            }
+                        ].map((item, idx) => (
+                            <div key={idx} className="pb-2 border-b border-border last:border-b-0">
+                                <div className="space-y-3">
+                                    <Link href={item.category} className='group'>
+                                        <span className="text-xs uppercase tracking-widest text-emerald-500 font-semibold">{item.category}</span>
+                                        <h4 className="text-2xl font-bold group-hover:text-emerald-500 text-foreground">{item.title}</h4>
+                                        <p className="text-foreground/70">{item.description}</p>
+                                        <div className="flex items-center gap-4 text-sm text-muted-foreground pt-2">
+                                            <span>{item.date}</span>
+                                        </div>
+                                    </Link>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Sidebar */}
+                <div className="space-y-4">
+                    {/* Expert Columns Widget */}
+                    <div>
+                        <div className="space-y-6">
+                            {[
+                                {
+                                    name: 'Sarah Jenkins',
+                                    title: 'Why SEO\'s Dead and Search Experience is the Future',
+                                    label: 'The E-Suite View'
+                                }
+                            ].map((expert, idx) => (
+                                <div key={idx} className="p-4 rounded-lg bg-muted/30 border border-border hover:border-accent/30 transition-colors cursor-pointer">
+                                    <p className="text-xs uppercase tracking-widest text-emerald-500 font-semibold mb-2">{expert.label}</p>
+                                    <p className="text-sm font-semibold text-foreground mb-1">{expert.title}</p>
+                                    <p className="text-xs text-muted-foreground">{expert.name}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
         </div>
     );
 }
