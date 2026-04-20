@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ArrowLeft, Clock, Calendar, Share2, BookmarkIcon, ThumbsUp } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -125,7 +126,8 @@ export default function BlogArticle() {
                     <div className="flex flex-col md:flex-row md:items-center gap-6 md:gap-8 border-t border-b border-border py-6">
                         {/* Author Info */}
                         <div className="flex items-center gap-4">
-                            <img
+                            <Image
+                                fill
                                 src={article.author.avatar}
                                 alt={article.author.name}
                                 className="w-14 h-14 rounded-full object-cover border border-border"
@@ -179,7 +181,8 @@ export default function BlogArticle() {
 
                     {/* Featured Image */}
                     <div className="relative rounded-2xl overflow-hidden border border-border">
-                        <img
+                        <Image
+                            fill
                             src={article.image}
                             alt={article.title}
                             className="w-full h-96 object-cover"
@@ -223,10 +226,11 @@ export default function BlogArticle() {
                         {/* Author Bio */}
                         <Card className="p-6 border border-border rounded-xl bg-muted/40">
                             <div className="flex gap-4">
-                                <img
+                                <Image
                                     src={article.author.avatar}
                                     alt={article.author.name}
-                                    className="w-16 h-16 rounded-full object-cover border border-border flex-shrink-0"
+                                    fill
+                                    className="w-16 h-16 rounded-full object-cover border border-border shrink-0"
                                 />
                                 <div className="flex-1">
                                     <h3 className="font-semibold text-foreground mb-1">{article.author.name}</h3>
@@ -273,7 +277,7 @@ export default function BlogArticle() {
             {/* CTA Section */}
             <section className="py-10 px-4 sm:px-2 lg:px-8">
                 <div className="max-w-4xl mx-auto">
-                    <Card className="p-6 md:p-10 border border-border rounded-2xl bg-gradient-to-br from-accent/5 to-accent/10 text-center">
+                    <Card className="p-6 md:p-10 border border-border rounded-2xl bg-linear-to-br from-accent/5 to-accent/10 text-center">
                         <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-4">
                             Stay Updated with Expert Insights
                         </h2>

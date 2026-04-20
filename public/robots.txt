@@ -1,0 +1,21 @@
+# Robots.txt for Momo Travels Search Engine
+# Allow search engines to crawl and index content
+
+User-agent: *
+Allow: /
+
+# Specific rules for major search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Crawl delay for other bots
+User-agent: *
+Crawl-delay: 1
+
+# Sitemaps
+Sitemap: https://mumotravels.com/sitemap.xml
+Sitemap: https://mumotravels.com/sitemap-blogs.xml
+Sitemap: https://mumotravels.com/sitemap-webinars.xml
