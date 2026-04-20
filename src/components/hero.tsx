@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ArrowRight, Calendar, Clock, Users } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Home() {
@@ -13,7 +14,7 @@ export default function Home() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     <div className="space-y-6">
                         <div className="inline-block">
-                            <span className="text-xs text-emerald-500 uppercase tracking-widest  font-semibold">Featured Insight</span>
+                            <span className="text-xs text-primary uppercase tracking-widest font-semibold">Featured Insight</span>
                         </div>
                         <h2 className="text-5xl md:text-6xl  font-bold leading-tight text-foreground">
                             The Core Web Vitals Paradigm Shift
@@ -22,7 +23,9 @@ export default function Home() {
                             A deep dive into the discrepancy between synthetic lab data and real-world field metrics, and why your current optimization strategy might be actively harming your ranking.
                         </p>
                         <div className="flex items-center gap-4 pt-4">
-                            <img
+                            <Image
+                                width={48}
+                                height={48}
                                 src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=48&h=48&fit=crop"
                                 alt="Dr. Elias Vance"
                                 className="w-12 h-12 rounded-full object-cover"
@@ -43,7 +46,7 @@ export default function Home() {
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
                 <div className="flex items-center justify-between mb-12">
                     <h3 className="text-4xl  font-bold text-foreground">Actionable Strategies</h3>
-                    <Link href="#" className="text-emerald-500 font-medium hover:underline flex items-center gap-2">
+                    <Link href="#" className="text-primary font-medium hover:underline flex items-center gap-2">
                         View All
                     </Link>
                 </div>
@@ -66,7 +69,7 @@ export default function Home() {
                     ].map((item, idx) => (
                         <Card key={idx} className="p-8 border border-border hover:shadow-lg hover:border-accent/30 transition-all">
                             <div className="space-y-4">
-                                <span className="text-xs uppercase tracking-widest text-emerald-500 font-semibold">{item.category}</span>
+                                <span className="text-xs uppercase tracking-widest text-primary font-semibold">{item.category}</span>
                                 <h4 className="text-2xl  font-bold text-foreground">{item.title}</h4>
                                 <p className="text-foreground/70 leading-relaxed">{item.description}</p>
                                 <div className="flex items-center gap-4 text-sm text-muted-foreground">
@@ -82,8 +85,8 @@ export default function Home() {
             {/* Featured Webinars Section */}
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
                 <div className="flex items-center justify-between mb-12">
-                    <h3 className="md:text-4xl text-2xl  font-bold text-foreground">Live & On-Demand Webinars</h3>
-                    <Link href="/webinars" className="md:text-primary font-medium hover:underline flex items-center gap-2">
+                    <h3 className="text-4xl  font-bold text-foreground">Live & On-Demand Webinars</h3>
+                    <Link href="/webinars" className="text-primary font-medium hover:underline flex items-center gap-2">
                         View All
                     </Link>
                 </div>
@@ -128,10 +131,12 @@ export default function Home() {
                     ].map((webinar) => (
                         <Card key={webinar.id} className="overflow-hidden border border-border hover:border-primary/50 hover:shadow-lg transition-all duration-300 group">
                             {/* Image */}
-                            <div className="relative h-40 overflow-hidden bg-gradient-to-br from-muted to-secondary">
-                                <img
+                            <div className="relative h-40 overflow-hidden bg-linear-to-br from-muted to-secondary">
+                                <Image
                                     src={webinar.image}
                                     alt={webinar.title}
+                                    width={500}
+                                    height={300}
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                 />
                                 <div className="absolute top-3 right-3">
@@ -168,7 +173,9 @@ export default function Home() {
 
                                 {/* Speaker */}
                                 <div className="flex items-center gap-2 pt-3 border-t border-border mb-4">
-                                    <img
+                                    <Image
+                                        width={48}
+                                        height={48}
                                         src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop"
                                         alt={webinar.speaker.name}
                                         className="w-8 h-8 rounded-full object-cover"
@@ -185,7 +192,7 @@ export default function Home() {
 
                                 {/* Register Button */}
                                 <Link href="/webinars">
-                                    <Button className="w-full group/btn bg-emerald-300 hover:bg-emerald-500 rounded-lg text-sm">
+                                    <Button className="w-full group/btn bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg text-sm transition-colors">
                                         Secure Seat
                                         <ArrowRight className="w-3.5 h-3.5 ml-1.5 group-hover/btn:translate-x-1 transition-transform" />
                                     </Button>
@@ -215,8 +222,8 @@ export default function Home() {
                             <div key={idx} className="pb-2 border-b border-border last:border-b-0">
                                 <div className="space-y-3">
                                     <Link href={item.category} className='group'>
-                                        <span className="text-xs uppercase tracking-widest text-emerald-500 font-semibold">{item.category}</span>
-                                        <h4 className="text-2xl font-bold group-hover:text-emerald-500 text-foreground">{item.title}</h4>
+                                        <span className="text-xs uppercase tracking-widest text-primary font-semibold">{item.category}</span>
+                                        <h4 className="text-2xl font-bold group-hover:text-primary text-foreground transition-colors">{item.title}</h4>
                                         <p className="text-foreground/70">{item.description}</p>
                                         <div className="flex items-center gap-4 text-sm text-muted-foreground pt-2">
                                             <span>{item.date}</span>
@@ -241,7 +248,7 @@ export default function Home() {
                                 }
                             ].map((expert, idx) => (
                                 <div key={idx} className="p-4 rounded-lg bg-muted/30 border border-border hover:border-accent/30 transition-colors cursor-pointer">
-                                    <p className="text-xs uppercase tracking-widest text-emerald-500 font-semibold mb-2">{expert.label}</p>
+                                    <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-2">{expert.label}</p>
                                     <p className="text-sm font-semibold text-foreground mb-1">{expert.title}</p>
                                     <p className="text-xs text-muted-foreground">{expert.name}</p>
                                 </div>
@@ -269,8 +276,8 @@ export default function Home() {
                             <div key={idx} className="pb-2 border-b border-border last:border-b-0">
                                 <div className="space-y-3">
                                     <Link href={item.category} className='group'>
-                                        <span className="text-xs uppercase tracking-widest text-emerald-500 font-semibold">{item.category}</span>
-                                        <h4 className="text-2xl font-bold group-hover:text-emerald-500 text-foreground">{item.title}</h4>
+                                        <span className="text-xs uppercase tracking-widest text-primary font-semibold">{item.category}</span>
+                                        <h4 className="text-2xl font-bold group-hover:text-primary text-foreground transition-colors">{item.title}</h4>
                                         <p className="text-foreground/70">{item.description}</p>
                                         <div className="flex items-center gap-4 text-sm text-muted-foreground pt-2">
                                             <span>{item.date}</span>
@@ -295,7 +302,7 @@ export default function Home() {
                                 }
                             ].map((expert, idx) => (
                                 <div key={idx} className="p-4 rounded-lg bg-muted/30 border border-border hover:border-accent/30 transition-colors cursor-pointer">
-                                    <p className="text-xs uppercase tracking-widest text-emerald-500 font-semibold mb-2">{expert.label}</p>
+                                    <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-2">{expert.label}</p>
                                     <p className="text-sm font-semibold text-foreground mb-1">{expert.title}</p>
                                     <p className="text-xs text-muted-foreground">{expert.name}</p>
                                 </div>
@@ -323,8 +330,8 @@ export default function Home() {
                             <div key={idx} className="pb-2 border-b border-border last:border-b-0">
                                 <div className="space-y-3">
                                     <Link href={item.category} className='group'>
-                                        <span className="text-xs uppercase tracking-widest text-emerald-500 font-semibold">{item.category}</span>
-                                        <h4 className="text-2xl font-bold group-hover:text-emerald-500 text-foreground">{item.title}</h4>
+                                        <span className="text-xs uppercase tracking-widest text-primary font-semibold">{item.category}</span>
+                                        <h4 className="text-2xl font-bold group-hover:text-primary text-foreground transition-colors">{item.title}</h4>
                                         <p className="text-foreground/70">{item.description}</p>
                                         <div className="flex items-center gap-4 text-sm text-muted-foreground pt-2">
                                             <span>{item.date}</span>
@@ -349,7 +356,7 @@ export default function Home() {
                                 }
                             ].map((expert, idx) => (
                                 <div key={idx} className="p-4 rounded-lg bg-muted/30 border border-border hover:border-accent/30 transition-colors cursor-pointer">
-                                    <p className="text-xs uppercase tracking-widest text-emerald-500 font-semibold mb-2">{expert.label}</p>
+                                    <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-2">{expert.label}</p>
                                     <p className="text-sm font-semibold text-foreground mb-1">{expert.title}</p>
                                     <p className="text-xs text-muted-foreground">{expert.name}</p>
                                 </div>
@@ -377,8 +384,8 @@ export default function Home() {
                             <div key={idx} className="pb-2 border-b border-border last:border-b-0">
                                 <div className="space-y-3">
                                     <Link href={item.category} className='group'>
-                                        <span className="text-xs uppercase tracking-widest text-emerald-500 font-semibold">{item.category}</span>
-                                        <h4 className="text-2xl font-bold group-hover:text-emerald-500 text-foreground">{item.title}</h4>
+                                        <span className="text-xs uppercase tracking-widest text-primary font-semibold">{item.category}</span>
+                                        <h4 className="text-2xl font-bold group-hover:text-primary text-foreground transition-colors">{item.title}</h4>
                                         <p className="text-foreground/70">{item.description}</p>
                                         <div className="flex items-center gap-4 text-sm text-muted-foreground pt-2">
                                             <span>{item.date}</span>
@@ -403,7 +410,7 @@ export default function Home() {
                                 }
                             ].map((expert, idx) => (
                                 <div key={idx} className="p-4 rounded-lg bg-muted/30 border border-border hover:border-accent/30 transition-colors cursor-pointer">
-                                    <p className="text-xs uppercase tracking-widest text-emerald-500 font-semibold mb-2">{expert.label}</p>
+                                    <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-2">{expert.label}</p>
                                     <p className="text-sm font-semibold text-foreground mb-1">{expert.title}</p>
                                     <p className="text-xs text-muted-foreground">{expert.name}</p>
                                 </div>
@@ -431,8 +438,8 @@ export default function Home() {
                             <div key={idx} className="pb-2 border-b border-border last:border-b-0">
                                 <div className="space-y-3">
                                     <Link href={item.category} className='group'>
-                                        <span className="text-xs uppercase tracking-widest text-emerald-500 font-semibold">{item.category}</span>
-                                        <h4 className="text-2xl font-bold group-hover:text-emerald-500 text-foreground">{item.title}</h4>
+                                        <span className="text-xs uppercase tracking-widest text-primary font-semibold">{item.category}</span>
+                                        <h4 className="text-2xl font-bold group-hover:text-primary text-foreground transition-colors">{item.title}</h4>
                                         <p className="text-foreground/70">{item.description}</p>
                                         <div className="flex items-center gap-4 text-sm text-muted-foreground pt-2">
                                             <span>{item.date}</span>
@@ -457,7 +464,7 @@ export default function Home() {
                                 }
                             ].map((expert, idx) => (
                                 <div key={idx} className="p-4 rounded-lg bg-muted/30 border border-border hover:border-accent/30 transition-colors cursor-pointer">
-                                    <p className="text-xs uppercase tracking-widest text-emerald-500 font-semibold mb-2">{expert.label}</p>
+                                    <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-2">{expert.label}</p>
                                     <p className="text-sm font-semibold text-foreground mb-1">{expert.title}</p>
                                     <p className="text-xs text-muted-foreground">{expert.name}</p>
                                 </div>

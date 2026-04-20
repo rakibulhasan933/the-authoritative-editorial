@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import {
@@ -14,9 +13,12 @@ import {
     ChevronDown,
     Menu,
     X,
+    Moon,
+    Sun,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { SearchDialog } from "../search-dialog";
+import React, { useEffect } from "react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -577,7 +579,7 @@ export default function Navbar() {
         if (closeTimer.current) clearTimeout(closeTimer.current);
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         const handleKey = (e: KeyboardEvent) => {
             if (e.key === "Escape") { setOpenMenu(null); setDrawerOpen(false); }
         };
@@ -585,7 +587,7 @@ export default function Navbar() {
         return () => document.removeEventListener("keydown", handleKey);
     }, []);
 
-    React.useEffect(() => {
+    useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth >= 1024) setDrawerOpen(false);
         };
@@ -597,14 +599,14 @@ export default function Navbar() {
         <>
             <header
                 ref={navRef}
-                className="sticky top-0 z-50 w-full bg-white border-b border-gray-200"
+                className="sticky top-0 z-50 w-full bg-card border-b border-border transition-colors duration-300"
                 onMouseLeave={handleMouseLeave}
             >
                 {/* ── Main bar ── */}
                 <div className="flex items-center h-14 px-4 sm:px-5 lg:px-6 gap-0">
 
                     {/* Logo */}
-                    <Link href="/" className="shrink-0 mr-4 font-bold text-[15px] tracking-tight text-gray-900">
+                    <Link href="/" className="shrink-0 mr-4 font-bold text-[15px] tracking-tight text-foreground">
                         The Authoritative{" "}
                         <span className="text-emerald-500">Editorial</span>
                     </Link>
@@ -616,7 +618,7 @@ export default function Navbar() {
                                 <Link
                                     key={item.id}
                                     href={item.href}
-                                    className="h-14 flex items-center px-3 text-[12.5px] font-medium text-gray-600 border-b-2 border-transparent hover:border-emerald-500 hover:text-emerald-600 hover:bg-gray-50 transition-colors whitespace-nowrap"
+                                    className="h-14 flex items-center px-3 text-[12.5px] font-medium text-muted-foreground border-b-2 border-transparent hover:border-primary hover:text-primary hover:bg-muted/50 transition-colors whitespace-nowrap"
                                 >
                                     {item.label}
                                 </Link>
@@ -628,8 +630,8 @@ export default function Navbar() {
                                     className={cn(
                                         "h-14 flex items-center gap-1 px-3 text-[12.5px] font-medium border-b-2 border-transparent transition-colors whitespace-nowrap",
                                         openMenu === item.id
-                                            ? "text-emerald-600 border-emerald-500 bg-gray-50"
-                                            : "text-gray-600 hover:text-emerald-600 hover:border-emerald-500 hover:bg-gray-50"
+                                            ? "text-primary border-primary bg-muted/50"
+                                            : "text-muted-foreground hover:text-primary hover:border-primary hover:bg-muted/50"
                                     )}
                                 >
                                     {item.label}
@@ -647,21 +649,23 @@ export default function Navbar() {
                     {/* Right actions — slide away when menu open */}
                     <div
                         className={cn(
-                            "hidden lg:flex items-center gap-0.5 shrink-0 overflow-hidden transition-all duration-300 ease-in-out",
+                            "hidden lg:flex items-center gap-1 shrink-0 overflow-hidden transition-all duration-300 ease-in-out",
                             isMenuOpen ? "max-w-0 opacity-0 pointer-events-none" : "max-w-full opacity-100"
                         )}
                     >
                         <SearchDialog />
+                        <ThemeToggle />
                     </div>
 
                     {/* Mobile: search + hamburger */}
                     <div className="flex lg:hidden items-center gap-1 ml-auto">
                         <SearchDialog />
+                        <ThemeToggle />
                         <button
                             type="button"
                             aria-label={drawerOpen ? "Close menu" : "Open menu"}
                             onClick={() => setDrawerOpen((p) => !p)}
-                            className="w-9 h-9 flex items-center justify-center rounded-md text-gray-500 hover:bg-gray-100 transition-colors"
+                            className="w-9 h-9 flex items-center justify-center rounded-md text-muted-foreground hover:bg-muted transition-colors"
                         >
                             {drawerOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
                         </button>
@@ -671,7 +675,7 @@ export default function Navbar() {
                 {/* ── Desktop Mega Menu ── */}
                 <div
                     className={cn(
-                        "hidden lg:block absolute left-0 right-0 top-14 bg-white border-b border-gray-200 overflow-hidden transition-all duration-300 ease-in-out z-40",
+                        "hidden lg:block absolute left-0 right-0 top-14 bg-card border-b border-border overflow-hidden transition-all duration-300 ease-in-out z-40",
                         isMenuOpen ? "max-h-105 opacity-100 pointer-events-auto" : "max-h-0 opacity-0 pointer-events-none"
                     )}
                     onMouseEnter={handleMegaMouseEnter}
@@ -686,7 +690,7 @@ export default function Navbar() {
             {/* ── Mobile Drawer ── */}
             <div
                 className={cn(
-                    "lg:hidden sticky top-14 z-40 w-full bg-white border-b border-gray-200 overflow-hidden transition-all duration-300 ease-in-out",
+                    "lg:hidden sticky top-14 z-40 w-full bg-card border-b border-border overflow-hidden transition-all duration-300 ease-in-out",
                     drawerOpen ? "max-h-[85vh] opacity-100 overflow-y-auto" : "max-h-0 opacity-0"
                 )}
             >
@@ -712,5 +716,76 @@ export default function Navbar() {
                 </div>
             </div>
         </>
+    );
+}
+
+// ─── Theme Toggle Button ─────────────────────────────────────────────────────
+function ThemeToggle() {
+    const [isDark, setIsDark] = React.useState<boolean>(
+        typeof document !== "undefined" && document.documentElement.classList.contains("dark")
+    );
+
+    const handleThemeChange = (): void => {
+        const html = document.documentElement;
+        const newIsDark = !isDark;
+        html.classList[newIsDark ? "add" : "remove"]("dark");
+        localStorage.setItem("theme", newIsDark ? "dark" : "light");
+        setIsDark(newIsDark);
+    };
+
+    // Render with server-side initial value (false) to match SSR output
+    // mounted flag ensures we don't show wrong icon briefly
+    return (
+        <button
+            type="button"
+            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            onClick={handleThemeChange}
+            className="w-9 h-9 flex items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+            suppressHydrationWarning
+        >
+            {isDark ? (
+                // Sun SVG for light mode
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={24}
+                    height={24}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-sun h-4 w-4"
+                    aria-hidden="true"
+                >
+                    <circle cx="12" cy="12" r="4" />
+                    <path d="M12 2v2" />
+                    <path d="M12 20v2" />
+                    <path d="m4.93 4.93 1.41 1.41" />
+                    <path d="m17.66 17.66 1.41 1.41" />
+                    <path d="M2 12h2" />
+                    <path d="M20 12h2" />
+                    <path d="m6.34 17.66-1.41 1.41" />
+                    <path d="m19.07 4.93-1.41 1.41" />
+                </svg>
+            ) : (
+                // Moon SVG for dark mode
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={24}
+                    height={24}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-moon h-4 w-4"
+                    aria-hidden="true"
+                >
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                </svg>
+            )}
+        </button>
     );
 }

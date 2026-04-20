@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/ui/Navbar";
 import Footer from "@/components/footer";
+import { ThemeProvider } from "@/providers/theme-provider";
 
 // ─── Fonts ────────────────────────────────────────────────────────────────────
 
@@ -33,24 +34,70 @@ const lora = Lora({
 
 export const metadata: Metadata = {
   title: {
-    default: "Search Engine Journal",
-    template: "%s | Search Engine Journal",
+    default: "Momo Travels | SEO & Travel Insights",
+    template: "%s | Momo Travels",
   },
   description:
-    "SEO news, tutorials, and strategy guides for digital marketers and content professionals.",
-  metadataBase: new URL("https://www.searchenginejournal.com"),
+    "Discover comprehensive SEO insights, travel guides, and expert webinars to boost your online visibility. Join thousands of digital marketers learning with Momo Travels.",
+  keywords: [
+    "SEO",
+    "travel guides",
+    "digital marketing",
+    "webinars",
+    "search engine optimization",
+    "content marketing",
+    "travel insights",
+  ],
+  metadataBase: new URL("https://mumotravels.com"),
+  alternates: {
+    canonical: "https://mumotravels.com",
+  },
   openGraph: {
     type: "website",
-    siteName: "Search Engine Journal",
+    siteName: "Momo Travels",
     locale: "en_US",
+    url: "https://mumotravels.com",
+    title: "Momo Travels | SEO & Travel Insights",
+    description:
+      "Discover comprehensive SEO insights, travel guides, and expert webinars to boost your online visibility.",
+    images: [
+      {
+        url: "https://mumotravels.com/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Momo Travels - SEO and Travel Insights",
+        type: "image/png",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    site: "@sejournal",
+    site: "@mumotravels",
+    creator: "@mumotravels",
+    title: "Momo Travels | SEO & Travel Insights",
+    description:
+      "Discover comprehensive SEO insights, travel guides, and expert webinars to boost your online visibility.",
+    images: ["https://mumotravels.com/og-image.png"],
   },
   robots: {
     index: true,
     follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      'max-snippet': -1,
+      'max-image-preview': 'large',
+      'max-video-preview': -1,
+    },
+  },
+  creator: "Rakibul Team",
+  publisher: "rakibul hasan",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
   },
 };
 
@@ -63,6 +110,7 @@ export const viewport: Viewport = {
   themeColor: "#ffffff",
   width: "device-width",
   initialScale: 1,
+  colorScheme: "light dark",
 };
 
 // ─── Layout ───────────────────────────────────────────────────────────────────
@@ -80,49 +128,59 @@ export default function RootLayout({
         figtree.variable,
         lora.variable,
         // Base rendering
-        "h-full antialiased hydrated",
+        "h-full antialiased  hydrated",
         // Scrollbar gutter prevents layout shift when scrollbar appears
         "overflow-y-scroll",
       )}
+      suppressHydrationWarning
     >
-      {/*
-       * Body: full-height flex column so a sticky footer (if added later)
-       * stays pinned to the bottom without extra wrappers.
-       * bg-white gives content areas a clean base; the subtle warm-gray
-       * page background is handled by a <main> wrapper below so the
-       * navbar stays white.
-       */}
+      <head />
       <body className={cn(
-        "min-h-full  flex flex-col",
-        "bg-white text-gray-900",
-        "selection:bg-emerald-100 selection:text-emerald-900",
+        "min-h-full flex flex-col",
+        "bg-background text-foreground",
+        "selection:bg-primary/20 selection:text-foreground",
       )}>
+        <ThemeProvider>
+          {/* ── Skip to content link for accessibility ── */}
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-0 focus:left-0 focus:z-50 focus:bg-primary focus:text-primary-foreground focus:px-4 focus:py-2"
+            aria-label="Skip to main content"
+          >
+            Skip to main content
+          </a>
 
-        {/* ── Top navigation ── */}
-        <Navbar />
+          {/* ── Top navigation ── */}
+          <Navbar />
 
-        {/*
-         * Page content wrapper.
-         * max-w-screen-2xl + auto margins = wide-but-bounded reading column.
-         * px / pt give the content breathing room from the navbar and edges.
-         * flex-1 makes this section grow so the footer stays at the bottom.
-         */}
-        <main className={cn(
-          "flex-1 w-full",
-          "bg-zinc-50",
-          // Subtle top border that visually separates content from navbar
-          "border-t border-zinc-100",
-        )}>
           {/*
-           * Inner content container — consistent horizontal padding at every
-           * breakpoint, generous vertical padding so articles don't crowd
-           * the navbar.
+           * Page content wrapper.
+           * flex-1 makes this section grow so the footer stays at the bottom.
+           * Semantic <main> landmark provides navigation context for assistive tech
            */}
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-10">
-            {children}
-          </div>
-        </main>
-        <Footer />
+          <main
+            id="main-content"
+            className={cn(
+              "flex-1 w-full",
+              "bg-background",
+              "border-t border-border",
+            )}
+            role="main"
+            aria-label="Main content"
+          >
+            {/*
+             * Inner content container — consistent horizontal padding at every
+             * breakpoint, generous vertical padding so articles don't crowd
+             * the navbar.
+             */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+              {children}
+            </div>
+          </main>
+
+          {/* ── Footer ── */}
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );
