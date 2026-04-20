@@ -333,7 +333,7 @@ const NAV_ITEMS = [
 function PromoCard({ promo }: { promo: PromoData }) {
     return (
         <div className="w-52 shrink-0">
-            <div className={cn("rounded-lg bg-gradient-to-br p-4 mb-2.5 h-[84px] flex items-center justify-center", promo.color)}>
+            <div className={cn("rounded-lg bg-linear-to-br p-4 mb-2.5 h-21 flex items-center justify-center", promo.color)}>
                 <span className="text-white/30 text-[10px] font-bold tracking-widest uppercase">Preview</span>
             </div>
             <span className="inline-block text-[9px] font-bold tracking-widest uppercase px-1.5 py-0.5 rounded border border-emerald-200 bg-emerald-50 text-emerald-700 mb-1.5">
@@ -398,7 +398,7 @@ function MegaMenuContent({ menuId }: { menuId: string }) {
                     <React.Fragment key={col.label}>
                         {i > 0 && <VSep />}
                         {col.social ? (
-                            <div className="w-[130px] shrink-0">
+                            <div className="w-32.5 shrink-0">
                                 <SectionLabel>{col.label}</SectionLabel>
                                 <div className="grid grid-cols-3 gap-1.5">
                                     {SOCIAL_ICONS.map((s) => (
@@ -414,7 +414,7 @@ function MegaMenuContent({ menuId }: { menuId: string }) {
                                 </div>
                             </div>
                         ) : (
-                            <div className="min-w-[140px]">
+                            <div className="min-w-35">
                                 <SectionLabel>{col.label}</SectionLabel>
                                 <LinkList links={col.links} />
                                 {col.extra && (
@@ -525,7 +525,7 @@ function MobileAccordion({ id, label }: { id: string; label: string }) {
             <div
                 className={cn(
                     "overflow-hidden transition-all duration-300 ease-in-out",
-                    open ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"
+                    open ? "max-h-150 opacity-100" : "max-h-0 opacity-0"
                 )}
             >
                 {groups.map((g, gi) => (
@@ -648,8 +648,8 @@ export default function Navbar() {
                     {/* Right actions — slide away when menu open */}
                     <div
                         className={cn(
-                            "hidden lg:flex items-center gap-0.5 flex-shrink-0 overflow-hidden transition-all duration-300 ease-in-out",
-                            isMenuOpen ? "max-w-0 opacity-0 pointer-events-none" : "max-w-[80px] opacity-100"
+                            "hidden lg:flex items-center gap-0.5 shrink-0 overflow-hidden transition-all duration-300 ease-in-out",
+                            isMenuOpen ? "max-w-0 opacity-0 pointer-events-none" : "max-w-full opacity-100"
                         )}
                     >
                         <SearchDialog />
@@ -657,9 +657,7 @@ export default function Navbar() {
 
                     {/* Mobile: search + hamburger */}
                     <div className="flex lg:hidden items-center gap-1 ml-auto">
-                        <button type="button" aria-label="Search" className="w-9 h-9 flex items-center justify-center rounded-md text-gray-500 hover:bg-gray-100 transition-colors">
-                            <Search className="h-4 w-4" />
-                        </button>
+                        <SearchDialog />
                         <button
                             type="button"
                             aria-label={drawerOpen ? "Close menu" : "Open menu"}
@@ -675,7 +673,7 @@ export default function Navbar() {
                 <div
                     className={cn(
                         "hidden lg:block absolute left-0 right-0 top-14 bg-white border-b border-gray-200 overflow-hidden transition-all duration-300 ease-in-out z-40",
-                        isMenuOpen ? "max-h-[420px] opacity-100 pointer-events-auto" : "max-h-0 opacity-0 pointer-events-none"
+                        isMenuOpen ? "max-h-105 opacity-100 pointer-events-auto" : "max-h-0 opacity-0 pointer-events-none"
                     )}
                     onMouseEnter={handleMegaMouseEnter}
                     onMouseLeave={handleMouseLeave}
