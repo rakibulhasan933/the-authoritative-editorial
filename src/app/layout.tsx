@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import Navbar from "@/components/ui/Navbar";
 import Footer from "@/components/footer";
 import { ThemeProvider } from "@/providers/theme-provider";
+import { buildMetadataFromSeo, getSeoPayload } from "@/lib/seo-api";
 
 // ─── Fonts ────────────────────────────────────────────────────────────────────
 
@@ -32,74 +33,38 @@ const lora = Lora({
 
 // ─── Metadata ─────────────────────────────────────────────────────────────────
 
-export const metadata: Metadata = {
-  title: {
-    default: "The Authoritative Editorial | SEO & Travel Insights",
-    template: "%s | The Authoritative Editorial",
-  },
-  description:
-    "Discover comprehensive SEO insights, travel guides, and expert webinars to boost your online visibility. Join thousands of digital marketers learning with The Authoritative Editorial.",
-  keywords: [
-    "SEO",
-    "travel guides",
-    "digital marketing",
-    "webinars",
-    "search engine optimization",
-    "content marketing",
-    "travel insights",
-  ],
-  metadataBase: new URL("https://authoritativeeditorial.com"),
-  alternates: {
-    canonical: "https://authoritativeeditorial.com",
-  },
-  openGraph: {
-    type: "website",
-    siteName: "The Authoritative Editorial",
-    locale: "en_US",
-    url: "https://authoritativeeditorial.com",
-    title: "The Authoritative Editorial | SEO & Travel Insights",
-    description:
-      "Discover comprehensive SEO insights, travel guides, and expert webinars to boost your online visibility.",
-    images: [
-      {
-        url: "https://authoritativeeditorial.com/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "The Authoritative Editorial - SEO and Travel Insights",
-        type: "image/png",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    site: "@authoritativeeditorial",
-    creator: "@authoritativeeditorial",
-    title: "The Authoritative Editorial | SEO & Travel Insights",
-    description:
-      "Discover comprehensive SEO insights, travel guides, and expert webinars to boost your online visibility.",
-    images: ["https://authoritativeeditorial.com/og-image.png"],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    nocache: false,
-    googleBot: {
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getSeoPayload();
+  const base = buildMetadataFromSeo(seo, "layout");
+
+  return {
+    ...base,
+    title: {
+      default: seo.pages.layout.title,
+      template: seo.titleTemplate,
+    },
+    robots: {
       index: true,
       follow: true,
-      noimageindex: false,
-      'max-snippet': -1,
-      'max-image-preview': 'large',
-      'max-video-preview': -1,
+      nocache: false,
+      googleBot: {
+        index: true,
+        follow: true,
+        noimageindex: false,
+        "max-snippet": -1,
+        "max-image-preview": "large",
+        "max-video-preview": -1,
+      },
     },
-  },
-  creator: "Rakibul Team",
-  publisher: "rakibul hasan",
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-};
+    creator: seo.creator,
+    publisher: seo.publisher,
+    formatDetection: {
+      email: false,
+      address: false,
+      telephone: false,
+    },
+  };
+}
 
 /**
  * Viewport config — kept separate from metadata as required by Next.js 14+.

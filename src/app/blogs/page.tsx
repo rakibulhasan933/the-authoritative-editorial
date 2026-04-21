@@ -3,39 +3,12 @@ import { Clock, User, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { BreadcrumbSchema } from "@/components/seo/schema-script";
 import Image from "next/image";
+import { buildMetadataFromSeo, getSeoPayload } from "@/lib/seo-api";
 
-export const metadata: Metadata = {
-    title: "Blog Archives | Expert SEO & Travel Insights",
-    description:
-        "Explore our comprehensive blog archive featuring expert insights on SEO, technical optimization, content strategy, and digital marketing. Updated weekly with actionable strategies.",
-    keywords: [
-        "SEO blog",
-        "digital marketing articles",
-        "content strategy",
-        "technical SEO",
-        "algorithm updates",
-        "conversion optimization",
-        "travel insights",
-    ],
-    openGraph: {
-        title: "Blog Archives | Expert SEO & Travel Insights",
-        description:
-            "Explore our comprehensive blog archive featuring expert insights on SEO and digital marketing.",
-        type: "website",
-        url: "https://authoritativeeditorial.com/blogs",
-        images: [
-            {
-                url: "https://authoritativeeditorial.com/og-blogs.png",
-                width: 1200,
-                height: 630,
-                alt: "Blog Archives",
-            },
-        ],
-    },
-    alternates: {
-        canonical: "https://authoritativeeditorial.com/blogs",
-    },
-};
+export async function generateMetadata(): Promise<Metadata> {
+    const seo = await getSeoPayload();
+    return buildMetadataFromSeo(seo, "blogs");
+}
 
 const blogData = [
     {
