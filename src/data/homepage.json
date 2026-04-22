@@ -1,0 +1,174 @@
+{
+  "hero": {
+    "label": "Featured Insight",
+    "title": "The Core Web Vitals Paradigm Shift",
+    "description": "A deep dive into the discrepancy between synthetic lab data and real-world field metrics, and why your current optimization strategy might be actively harming your ranking.",
+    "author": {
+      "name": "Dr. Elias Vance",
+      "role": "Head of Technical SEO",
+      "readTime": "12 min read",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=48&h=48&fit=crop"
+    }
+  },
+  "actionableStrategies": {
+    "category": "Actionable Strategies",
+    "viewAllHref": "#",
+    "items": [
+      {
+        "title": "Beyond the Keyword: Mapping Semantic Entities for Topical Authority",
+        "description": "Stop chasing single volume metrics. Learn how to structure your content architecture around entity graphs to build unshakeable topical relevance.",
+        "date": "Oct 12",
+        "read": "8 min read"
+      },
+      {
+        "title": "The Anatomy of a High-Converting Informational Query Page",
+        "description": "Analyzing 500 top-ranking \"How-To\" guides to discover the exact formatting, rich snippet deployment, and UX patterns that win featured snippets.",
+        "date": "Oct 08",
+        "read": "6 min read"
+      }
+    ]
+  },
+  "webinars": {
+    "title": "Live & On-Demand Webinars",
+    "viewAllHref": "/webinars",
+    "items": [
+      {
+        "id": 1,
+        "title": "Deconstructing Google's Helpful Content Ecosystem",
+        "description": "A rigorous analysis of recent patent updates and algorithm shifts targeting information gain and topical authority.",
+        "date": "Oct 24, 2024",
+        "time": "10:00 AM EST",
+        "duration": "60 min",
+        "attendees": 847,
+        "category": "Technical SEO",
+        "speaker": {
+          "name": "Dr. Elias Vance",
+          "title": "Head Data Scientist"
+        },
+        "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop"
+      },
+      {
+        "id": 2,
+        "title": "The Entity Graph: Beyond Keyword Targeting",
+        "description": "Learn how to map editorial strategy to Google's Knowledge Graph, establishing your brand as a definitive entity.",
+        "date": "Nov 02, 2024",
+        "time": "2:00 PM EST",
+        "duration": "45 min",
+        "attendees": 623,
+        "category": "Content Strategy",
+        "speaker": {
+          "name": "Marcus Vance",
+          "title": "Principal Strategist"
+        },
+        "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop"
+      },
+      {
+        "id": 3,
+        "title": "Core Web Vitals in 2024: The Lab vs. Field Data Paradox",
+        "description": "Understanding the divergence between synthetic metrics and real-world performance, and why your current optimization might be incorrect.",
+        "date": "Nov 15, 2024",
+        "time": "1:00 PM EST",
+        "duration": "50 min",
+        "attendees": 521,
+        "category": "AI & Search",
+        "speaker": {
+          "name": "Sarah Jenkins",
+          "title": "Technical Lead"
+        },
+        "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop"
+      }
+    ]
+  },
+  "contentSections": [
+    {
+      "category": "Technical Briefs",
+      "href": "/briefs",
+      "articles": [
+        {
+          "title": "Migrating to Next.js: The Pre-rendering Checklist for SEO",
+          "date": "Oct 01",
+          "description": "Client-side rendering pitfalls continue to plague enterprise migrations. Here is the definitive checklist for ensuring your JS framework doesn't tank your crawl budget."
+        }
+      ],
+      "sidebar": [
+        {
+          "name": "Sarah Jenkins",
+          "title": "Why SEO's Dead and Search Experience is the Future",
+          "label": "The E-Suite View"
+        }
+      ]
+    },
+    {
+      "category": "Social Media",
+      "href": "/briefs",
+      "articles": [
+        {
+          "title": "Migrating to Next.js: The Pre-rendering Checklist for SEO",
+          "date": "Oct 01",
+          "description": "Client-side rendering pitfalls continue to plague enterprise migrations. Here is the definitive checklist for ensuring your JS framework doesn't tank your crawl budget."
+        }
+      ],
+      "sidebar": [
+        {
+          "name": "Sarah Jenkins",
+          "title": "Why SEO's Dead and Search Experience is the Future",
+          "label": "The E-Suite View"
+        }
+      ]
+    },
+    {
+      "category": "Content",
+      "href": "/briefs",
+      "articles": [
+        {
+          "title": "Migrating to Next.js: The Pre-rendering Checklist for SEO",
+          "date": "Oct 01",
+          "description": "Client-side rendering pitfalls continue to plague enterprise migrations. Here is the definitive checklist for ensuring your JS framework doesn't tank your crawl budget."
+        }
+      ],
+      "sidebar": [
+        {
+          "name": "Sarah Jenkins",
+          "title": "Why SEO's Dead and Search Experience is the Future",
+          "label": "The E-Suite View"
+        }
+      ]
+    },
+    {
+      "category": "Paid Media",
+      "href": "/briefs",
+      "articles": [
+        {
+          "title": "Migrating to Next.js: The Pre-rendering Checklist for SEO",
+          "date": "Oct 01",
+          "description": "Client-side rendering pitfalls continue to plague enterprise migrations. Here is the definitive checklist for ensuring your JS framework doesn't tank your crawl budget."
+        }
+      ],
+      "sidebar": [
+        {
+          "name": "Sarah Jenkins",
+          "title": "Why SEO's Dead and Search Experience is the Future",
+          "label": "The E-Suite View"
+        }
+      ]
+    },
+    {
+      "category": "SEO",
+      "href": "/briefs",
+      "articles": [
+        {
+          "title": "Migrating to Next.js: The Pre-rendering Checklist for SEO",
+          "date": "Oct 01",
+          "description": "Client-side rendering pitfalls continue to plague enterprise migrations. Here is the definitive checklist for ensuring your JS framework doesn't tank your crawl budget."
+        }
+      ],
+      "sidebar": [
+        {
+          "name": "Sarah Jenkins",
+          "title": "Why SEO's Dead and Search Experience is the Future",
+          "label": "The E-Suite View"
+        }
+      ]
+    }
+  ]
+}

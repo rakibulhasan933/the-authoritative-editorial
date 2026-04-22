@@ -8,7 +8,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return buildMetadataFromSeo(seo, "home");
 }
 
-export default function Home() {
+export default async function Home() {
   return (
     <>
       {/* ── Organization and Breadcrumb Schema ── */}
