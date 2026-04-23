@@ -102,7 +102,7 @@ async function getBlogPost(slug: string, category: string): Promise<BlogDetailRe
         `https://authoritativeeditorial.vercel.app/api/${category}/${encodeURIComponent(slug)}`,
         {
             next: {
-                revalidate: process.env.NEXT_PUBLIC_REVALIDATE_INTERVAL ? parseInt(process.env.NEXT_PUBLIC_REVALIDATE_INTERVAL) : 300,
+                revalidate: 60,
                 // Enables on-demand revalidation via revalidateTag()
             },
         },
