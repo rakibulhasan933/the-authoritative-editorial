@@ -42,6 +42,7 @@ function WebinarSubmit({ webinar }: { webinar: HomepagePayload['webinars']['item
         setRegistrationSubmitted(false);
     };
 
+
     const handleRegistrationSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!selectedWebinar) return;
