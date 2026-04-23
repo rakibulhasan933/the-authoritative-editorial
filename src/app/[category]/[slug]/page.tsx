@@ -112,27 +112,28 @@ async function getBlogPost(slug: string, category: string): Promise<BlogDetailRe
     return (await response.json()) as BlogDetailResponse;
 }
 
-export async function generateMetadata({ params }: Params): Promise<Metadata> {
-    const seo = await getSeoPayload();
-    const { slug, category } = await params;
-    const metadata = buildMetadataFromSeo(seo, "blogs");
+// export async function generateMetadata({ params }: Params): Promise<Metadata> {
+//     const seo = await getSeoPayload();
+//     const { slug, category } = await params;
+//     // const metadata = buildMetadataFromSeo(seo, "blogs");
 
-    const payload = await getBlogPost(slug, category);
+//     const payload = await getBlogPost(slug, category);
 
-    if (!payload) {
-        return metadata;
-    }
+//     if (!payload) {
+//         return metadata;
+//     }
 
-    return {
-        ...metadata,
-        title: payload.post.seo.metaTitle || payload.post.title,
-        description: payload.post.seo.metaDescription || payload.post.excerpt,
-        keywords: payload.post.seo.keywords,
-    };
-}
+//     return {
+//         ...metadata,
+//         title: payload.post.seo.metaTitle || payload.post.title,
+//         description: payload.post.seo.metaDescription || payload.post.excerpt,
+//         keywords: payload.post.seo.keywords,
+//     };
+// }
 
 export default async function BlogPostPage({ params }: Params) {
-    const { slug, category } = await params;
+    const data = await params;
+    const { slug, category } = data;
     const payload = await getBlogPost(slug, category);
     if (!payload) {
         notFound();
