@@ -62,20 +62,20 @@ async function getCategoryBlogs(category: string) {
     return (await response.json()) as CategoryApiResponse;
 }
 
-// export async function generateMetadata({ params }: Params): Promise<Metadata> {
-//     const seo = await getSeoPayload();
-//     const { category } = await params;
-//     // const metadata = buildMetadataFromSeo(seo, category);
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+    const seo = await getSeoPayload();
+    const { category } = await params;
+    const metadata = buildMetadataFromSeo(seo, "blogs");
 
-//     const payload = await getCategoryBlogs(category);
-//     const categoryName = payload?.category.name ?? decodeURIComponent(category);
+    const payload = await getCategoryBlogs(category);
+    const categoryName = payload?.category.name ?? decodeURIComponent(category);
 
-//     return {
-//         ...metadata,
-//         title: `${categoryName} | Blog Archives`,
-//         description: `Explore ${categoryName} articles, insights, and analysis from our editorial team.`,
-//     };
-// }
+    return {
+        ...metadata,
+        title: `${categoryName} | Blog Archives`,
+        description: `Explore ${categoryName} articles, insights, and analysis from our editorial team.`,
+    };
+}
 
 export default async function Page({ params }: Params) {
     const { category } = await params;

@@ -115,24 +115,24 @@ async function getBlogPost(slug: string) {
     return (await response.json()) as BlogDetailResponse;
 }
 
-// export async function generateMetadata({ params }: Params): Promise<Metadata> {
-//     const seo = await getSeoPayload();
-//     const { slug } = await params;
-//     const metadata = buildMetadataFromSeo(seo, slug);
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+    const seo = await getSeoPayload();
+    const { slug } = await params;
+    const metadata = buildMetadataFromSeo(seo, "blogs");
 
-//     const payload = await getBlogPost(slug);
+    const payload = await getBlogPost(slug);
 
-//     if (!payload) {
-//         return metadata;
-//     }
+    if (!payload) {
+        return metadata;
+    }
 
-//     return {
-//         ...metadata,
-//         title: payload.post.seo.metaTitle || payload.post.title,
-//         description: payload.post.seo.metaDescription || payload.post.excerpt,
-//         keywords: payload.post.seo.keywords,
-//     };
-// }
+    return {
+        ...metadata,
+        title: payload.post.seo.metaTitle || payload.post.title,
+        description: payload.post.seo.metaDescription || payload.post.excerpt,
+        keywords: payload.post.seo.keywords,
+    };
+}
 
 export default async function BlogPostPage({ params }: Params) {
     const { slug } = await params;
