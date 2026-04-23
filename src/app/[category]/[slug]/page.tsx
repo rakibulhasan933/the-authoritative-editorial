@@ -101,10 +101,7 @@ async function getBlogPost(slug: string, category: string): Promise<BlogDetailRe
     const response = await fetch(
         `https://authoritativeeditorial.vercel.app/api/${category}/${encodeURIComponent(slug)}`,
         {
-            next: {
-                revalidate: 0,
-                // Enables on-demand revalidation via revalidateTag()
-            },
+            cache: "no-store",
         },
     );
 

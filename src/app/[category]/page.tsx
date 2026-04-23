@@ -48,10 +48,7 @@ async function getCategoryBlogs(category: string) {
     const response = await fetch(
         `https://authoritativeeditorial.vercel.app/api/blogs/category/${encodeURIComponent(category)}`,
         {
-            next: {
-                revalidate: 30
-                // Enables on-demand revalidation via revalidateTag()
-            },
+            cache: "no-store",
         },
     );
 
