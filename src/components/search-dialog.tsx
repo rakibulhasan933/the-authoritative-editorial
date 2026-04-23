@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useState, type ReactNode } from "react";
-import { BookOpen, FileText, LoaderCircle, Search, TrendingUp, Video, X } from "lucide-react";
+import { BookOpen, FileText, Search, TrendingUp, Video, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { SearchDialogSkeleton, SearchResultsSkeleton } from "./app-shell-skeletons";
 
 interface SearchCategory {
     id: string;
@@ -102,11 +103,20 @@ export function SearchDialog() {
     const [categories, setCategories] = useState<SearchCategory[]>([]);
     const [posts, setPosts] = useState<SearchResultItem[]>([]);
     const [webinars, setWebinars] = useState<SearchResultItem[]>([]);
-    const [recentSearches, setRecentSearches] = useState<string[]>(fallbackRecentSearches);
+    const [recentSearches, setRecentSearches] = useState<string[]>(() => readRecentSearches());
     const [isLoading, setIsLoading] = useState(false);
 
-    const openSearch = () => {
+    const refreshRecentSearches = () => {
         setRecentSearches(readRecentSearches());
+    };
+
+    const beginLoading = () => {
+        setIsLoading(true);
+    };
+
+    const openSearch = () => {
+        refreshRecentSearches();
+        beginLoading();
         setIsOpen(true);
     };
 
@@ -114,7 +124,15 @@ export function SearchDialog() {
         const handleKeyDown = (event: KeyboardEvent) => {
             if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
                 event.preventDefault();
-                setIsOpen((current) => !current);
+                setIsOpen((current) => {
+                    if (current) {
+                        return false;
+                    }
+
+                    refreshRecentSearches();
+                    beginLoading();
+                    return true;
+                });
             }
 
             if (event.key === "Escape") {
@@ -130,11 +148,11 @@ export function SearchDialog() {
         if (!isOpen) return;
 
         const controller = new AbortController();
-        const timeoutId = window.setTimeout(async () => {
-            setIsLoading(true);
 
+        const timeoutId = window.setTimeout(async () => {
             try {
                 const searchParams = new URLSearchParams();
+
                 if (searchQuery.trim()) {
                     searchParams.set("q", searchQuery.trim());
                 }
@@ -146,7 +164,7 @@ export function SearchDialog() {
                 const response = await fetch(`/api/search?${searchParams.toString()}`, {
                     signal: controller.signal,
                 });
-                console.log({ response });
+
                 if (!response.ok) {
                     throw new Error("Search request failed.");
                 }
@@ -183,15 +201,26 @@ export function SearchDialog() {
     const hasResults = posts.length > 0 || webinars.length > 0;
 
     const handleSearchSelection = (value: string) => {
+        beginLoading();
         setSearchQuery(value);
         writeRecentSearches(value);
-        setRecentSearches(readRecentSearches());
+        refreshRecentSearches();
+    };
+
+    const handleSearchQueryChange = (value: string) => {
+        beginLoading();
+        setSearchQuery(value);
+    };
+
+    const handleCategoryToggle = (categoryId: string) => {
+        beginLoading();
+        setActiveCategory((current) => (current === categoryId ? null : categoryId));
     };
 
     const handleResultSelection = () => {
         if (searchQuery.trim()) {
             writeRecentSearches(searchQuery);
-            setRecentSearches(readRecentSearches());
+            refreshRecentSearches();
         }
         setIsOpen(false);
     };
@@ -204,8 +233,8 @@ export function SearchDialog() {
             >
                 <Search size={18} className="text-muted-foreground group-hover:text-foreground" />
                 <span className="text-sm text-muted-foreground group-hover:text-foreground">Search...</span>
-                <kbd className="ml-auto text-xs text-muted-foreground bg-background rounded px-2 py-1">
-                    ⌘K
+                <kbd className="ml-auto rounded bg-background px-2 py-1 text-xs text-muted-foreground">
+                    Ctrl K
                 </kbd>
             </button>
 
@@ -220,7 +249,7 @@ export function SearchDialog() {
             {isOpen ? (
                 <>
                     <div
-                        className="fixed inset-0 bg-black/50 z-40"
+                        className="fixed inset-0 z-40 bg-black/50"
                         onClick={() => setIsOpen(false)}
                         style={{ animation: "fadeIn 0.2s ease-out" }}
                     />
@@ -230,7 +259,7 @@ export function SearchDialog() {
                         style={{ animation: "slideDown 0.3s ease-out" }}
                     >
                         <div
-                            className="w-full max-w-2xl bg-background border border-border rounded-xl shadow-2xl pointer-events-auto overflow-hidden"
+                            className="w-full max-w-2xl overflow-hidden rounded-xl border border-border bg-background shadow-2xl pointer-events-auto"
                             onClick={(event) => event.stopPropagation()}
                         >
                             <div className="border-b border-border p-6">
@@ -244,14 +273,14 @@ export function SearchDialog() {
                                             type="text"
                                             placeholder="Search blogs, webinars, and categories..."
                                             value={searchQuery}
-                                            onChange={(event) => setSearchQuery(event.target.value)}
+                                            onChange={(event) => handleSearchQueryChange(event.target.value)}
                                             autoFocus
                                             className="pl-12 pr-12 py-3 text-base bg-transparent border-0 focus:outline-none focus:ring-0 placeholder:text-muted-foreground"
                                         />
                                         {searchQuery ? (
                                             <button
-                                                onClick={() => setSearchQuery("")}
-                                                className="absolute right-4 top-1/2 -translate-y-1/2 p-1 hover:bg-muted rounded transition-colors"
+                                                onClick={() => handleSearchQueryChange("")}
+                                                className="absolute right-4 top-1/2 -translate-y-1/2 rounded p-1 transition-colors hover:bg-muted"
                                                 aria-label="Clear search"
                                             >
                                                 <X size={18} className="text-muted-foreground hover:text-foreground" />
@@ -260,7 +289,7 @@ export function SearchDialog() {
                                     </div>
                                     <button
                                         onClick={() => setIsOpen(false)}
-                                        className="p-2 hover:bg-muted rounded-lg transition-colors text-muted-foreground hover:text-foreground"
+                                        className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                                         title="Close (Esc)"
                                         aria-label="Close search"
                                     >
@@ -270,18 +299,16 @@ export function SearchDialog() {
                             </div>
 
                             <div className="max-h-[60vh] overflow-y-auto">
-                                {!hasQuery ? (
+                                {isLoading ? (
+                                    <div className="p-6">
+                                        {hasQuery ? <SearchResultsSkeleton /> : <SearchDialogSkeleton />}
+                                    </div>
+                                ) : !hasQuery ? (
                                     <>
-                                        <div className="p-6 border-b border-border">
-                                            <div className="flex items-center justify-between gap-4 mb-4">
-                                                <h3 className="text-xs uppercase tracking-widest font-semibold text-muted-foreground">
-                                                    Browse by Category
-                                                </h3>
-                                                {isLoading ? (
-                                                    <LoaderCircle size={16} className="animate-spin text-muted-foreground" />
-                                                ) : null}
-                                            </div>
-
+                                        <div className="border-b border-border p-6">
+                                            <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                                                Browse by Category
+                                            </h3>
                                             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                                                 {categoryCards.map((category) => {
                                                     const isActive = activeCategory === category.id;
@@ -289,10 +316,8 @@ export function SearchDialog() {
                                                     return (
                                                         <button
                                                             key={category.id}
-                                                            onClick={() =>
-                                                                setActiveCategory((current) => (current === category.id ? null : category.id))
-                                                            }
-                                                            className={`p-3 rounded-lg border transition-all text-left group ${isActive
+                                                            onClick={() => handleCategoryToggle(category.id)}
+                                                            className={`rounded-lg border p-3 text-left transition-all group ${isActive
                                                                 ? "border-accent bg-accent/10"
                                                                 : "border-border hover:border-accent/50 hover:bg-muted/50"
                                                                 }`}
@@ -302,7 +327,7 @@ export function SearchDialog() {
                                                             >
                                                                 {category.icon}
                                                                 <div className="flex-1">
-                                                                    <p className="font-semibold text-sm">{category.name}</p>
+                                                                    <p className="text-sm font-semibold">{category.name}</p>
                                                                     <p className="text-xs text-muted-foreground group-hover:text-foreground/60">
                                                                         {category.description}
                                                                     </p>
@@ -314,8 +339,8 @@ export function SearchDialog() {
                                             </div>
                                         </div>
 
-                                        <div className="p-6 border-b border-border">
-                                            <h3 className="text-xs uppercase tracking-widest font-semibold text-muted-foreground mb-4">
+                                        <div className="border-b border-border p-6">
+                                            <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                                                 Latest Articles
                                             </h3>
                                             <div className="space-y-2">
@@ -325,12 +350,12 @@ export function SearchDialog() {
                                                             key={post.id}
                                                             href={post.href}
                                                             onClick={handleResultSelection}
-                                                            className="w-full text-left px-3 py-3 rounded-lg hover:bg-muted transition-colors text-foreground text-sm flex items-start gap-3 border border-transparent hover:border-border"
+                                                            className="flex w-full items-start gap-3 rounded-lg border border-transparent px-3 py-3 text-left text-sm text-foreground transition-colors hover:border-border hover:bg-muted"
                                                         >
-                                                            <TrendingUp size={16} className="text-accent shrink-0 mt-0.5" />
+                                                            <TrendingUp size={16} className="mt-0.5 shrink-0 text-accent" />
                                                             <div>
                                                                 <p className="font-medium">{post.title}</p>
-                                                                <p className="text-xs text-muted-foreground mt-1">
+                                                                <p className="mt-1 text-xs text-muted-foreground">
                                                                     {post.category} | {post.meta}
                                                                 </p>
                                                             </div>
@@ -342,8 +367,8 @@ export function SearchDialog() {
                                             </div>
                                         </div>
 
-                                        <div className="p-6 border-b border-border">
-                                            <h3 className="text-xs uppercase tracking-widest font-semibold text-muted-foreground mb-4">
+                                        <div className="border-b border-border p-6">
+                                            <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                                                 Upcoming Webinars
                                             </h3>
                                             <div className="space-y-2">
@@ -353,12 +378,12 @@ export function SearchDialog() {
                                                             key={webinar.id}
                                                             href={webinar.href}
                                                             onClick={handleResultSelection}
-                                                            className="w-full text-left px-3 py-3 rounded-lg hover:bg-muted transition-colors text-foreground text-sm flex items-start gap-3 border border-transparent hover:border-border"
+                                                            className="flex w-full items-start gap-3 rounded-lg border border-transparent px-3 py-3 text-left text-sm text-foreground transition-colors hover:border-border hover:bg-muted"
                                                         >
-                                                            <Video size={16} className="text-accent shrink-0 mt-0.5" />
+                                                            <Video size={16} className="mt-0.5 shrink-0 text-accent" />
                                                             <div>
                                                                 <p className="font-medium">{webinar.title}</p>
-                                                                <p className="text-xs text-muted-foreground mt-1">
+                                                                <p className="mt-1 text-xs text-muted-foreground">
                                                                     {webinar.category} | {webinar.meta}
                                                                 </p>
                                                             </div>
@@ -372,7 +397,7 @@ export function SearchDialog() {
 
                                         {recentSearches.length ? (
                                             <div className="p-6">
-                                                <h3 className="text-xs uppercase tracking-widest font-semibold text-muted-foreground mb-4">
+                                                <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                                                     Recent
                                                 </h3>
                                                 <div className="space-y-2">
@@ -380,9 +405,9 @@ export function SearchDialog() {
                                                         <button
                                                             key={search}
                                                             onClick={() => handleSearchSelection(search)}
-                                                            className="w-full text-left px-3 py-2 rounded-lg hover:bg-muted transition-colors text-foreground text-sm flex items-center gap-2"
+                                                            className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-foreground transition-colors hover:bg-muted"
                                                         >
-                                                            <Search size={16} className="text-muted-foreground shrink-0" />
+                                                            <Search size={16} className="shrink-0 text-muted-foreground" />
                                                             {search}
                                                         </button>
                                                     ))}
@@ -397,20 +422,17 @@ export function SearchDialog() {
                                                 Showing results for{" "}
                                                 <span className="font-semibold text-foreground">&quot;{searchQuery}&quot;</span>
                                             </p>
-                                            {isLoading ? (
-                                                <LoaderCircle size={16} className="animate-spin text-muted-foreground" />
-                                            ) : null}
                                         </div>
 
                                         {activeCategory ? (
-                                            <p className="text-xs text-muted-foreground mt-2">Filtered by selected category.</p>
+                                            <p className="mt-2 text-xs text-muted-foreground">Filtered by selected category.</p>
                                         ) : null}
 
                                         {hasResults ? (
                                             <div className="mt-5 space-y-6">
                                                 {posts.length ? (
                                                     <section>
-                                                        <h4 className="text-xs uppercase tracking-widest font-semibold text-muted-foreground mb-3">
+                                                        <h4 className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                                                             Blog Posts
                                                         </h4>
                                                         <div className="space-y-3">
@@ -419,16 +441,16 @@ export function SearchDialog() {
                                                                     key={result.id}
                                                                     href={result.href}
                                                                     onClick={handleResultSelection}
-                                                                    className="block p-4 rounded-lg hover:bg-muted transition-colors cursor-pointer border border-transparent hover:border-border"
+                                                                    className="block cursor-pointer rounded-lg border border-transparent p-4 transition-colors hover:border-border hover:bg-muted"
                                                                 >
                                                                     <div className="flex items-start gap-3">
-                                                                        <BookOpen size={18} className="text-accent shrink-0 mt-0.5" />
+                                                                        <BookOpen size={18} className="mt-0.5 shrink-0 text-accent" />
                                                                         <div className="min-w-0">
                                                                             <p className="font-medium text-foreground">{result.title}</p>
-                                                                            <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+                                                                            <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
                                                                                 {result.description}
                                                                             </p>
-                                                                            <p className="text-xs text-muted-foreground mt-2">
+                                                                            <p className="mt-2 text-xs text-muted-foreground">
                                                                                 {result.category} | {formatDisplayDate(result.publishedAt)} | {result.meta}
                                                                             </p>
                                                                         </div>
@@ -441,7 +463,7 @@ export function SearchDialog() {
 
                                                 {webinars.length ? (
                                                     <section>
-                                                        <h4 className="text-xs uppercase tracking-widest font-semibold text-muted-foreground mb-3">
+                                                        <h4 className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                                                             Webinars
                                                         </h4>
                                                         <div className="space-y-3">
@@ -450,16 +472,16 @@ export function SearchDialog() {
                                                                     key={result.id}
                                                                     href={result.href}
                                                                     onClick={handleResultSelection}
-                                                                    className="block p-4 rounded-lg hover:bg-muted transition-colors cursor-pointer border border-transparent hover:border-border"
+                                                                    className="block cursor-pointer rounded-lg border border-transparent p-4 transition-colors hover:border-border hover:bg-muted"
                                                                 >
                                                                     <div className="flex items-start gap-3">
-                                                                        <Video size={18} className="text-accent shrink-0 mt-0.5" />
+                                                                        <Video size={18} className="mt-0.5 shrink-0 text-accent" />
                                                                         <div className="min-w-0">
                                                                             <p className="font-medium text-foreground">{result.title}</p>
-                                                                            <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+                                                                            <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
                                                                                 {result.description}
                                                                             </p>
-                                                                            <p className="text-xs text-muted-foreground mt-2">
+                                                                            <p className="mt-2 text-xs text-muted-foreground">
                                                                                 {result.category} | {formatDisplayDate(result.publishedAt)} | {result.meta}
                                                                             </p>
                                                                         </div>
@@ -473,7 +495,7 @@ export function SearchDialog() {
                                         ) : (
                                             <div className="mt-6 rounded-lg border border-dashed border-border p-6 text-center">
                                                 <p className="font-medium text-foreground">No matching content found.</p>
-                                                <p className="text-sm text-muted-foreground mt-1">
+                                                <p className="mt-1 text-sm text-muted-foreground">
                                                     Try a different keyword or switch the selected category filter.
                                                 </p>
                                             </div>
@@ -482,7 +504,7 @@ export function SearchDialog() {
                                 )}
                             </div>
 
-                            <div className="border-t border-border px-6 py-4 bg-muted/30 flex items-center justify-between gap-4 text-xs text-muted-foreground">
+                            <div className="flex items-center justify-between gap-4 border-t border-border bg-muted/30 px-6 py-4 text-xs text-muted-foreground">
                                 <span>Search across blogs, webinars, and categories.</span>
                                 <div className="flex items-center gap-4">
                                     <span>Ctrl K to open</span>
