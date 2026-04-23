@@ -1,210 +1,295 @@
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { ArrowLeft, Clock, Calendar, Share2, BookmarkIcon, ThumbsUp } from 'lucide-react';
-import Image from 'next/image';
-import Link from 'next/link';
+import type { Metadata } from "next";
+import type { ComponentProps } from "react";
+import {
+    ArrowLeft,
+    ArrowRight,
+    Calendar,
+    Clock,
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import DOMPurify from "isomorphic-dompurify";
+import { Card } from "@/components/ui/card";
+import { buildMetadataFromSeo, getSeoPayload } from "@/lib/seo-api";
 
-export default function BlogArticle() {
+type Params = { params: Promise<{ slug: string }> };
 
-    const article = {
-        slug: 'core-web-vitals-paradigm-shift',
-        title: 'The Core Web Vitals Paradigm Shift: What Engineering Teams Are Missing',
-        excerpt: 'A deep dive into the discrepancy between synthetic lab data and real-world field metrics, and why your current optimization strategy might be actively harming your ranking.',
+type BlogDetailResponse = {
+    post: {
+        id: string;
+        slug: string;
+        title: string;
+        excerpt: string;
+        publishedDate: string;
+        readTime: string;
+        category: string;
+        categoryId: string | null;
+        categorySlug: string | null;
+        image: string;
         author: {
-            name: 'Dr. Elias Vance',
-            title: 'Head of Technical SEO',
-            avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop'
-        },
-        publishedDate: 'October 12, 2024',
-        readTime: '12 min read',
-        category: 'Featured Insight',
-        image: 'https://images.unsplash.com/photo-1460925895917-aaf4e2fe1ddc?w=1200&h=600&fit=crop',
-        content: `
-      In the discourse surrounding technical search engine optimization, few metrics have generated as much discussion—or as much confusion—as Core Web Vitals. What began as a straightforward initiative to measure real-world user experience has evolved into a complex landscape where synthetic lab data often contradicts actual field performance.
-
-      ## The Lab vs. Field Divide
-
-      The fundamental issue lies in the nature of measurement itself. Google's lab-based metrics, collected through Lighthouse audits and synthetic testing environments, measure performance under idealized conditions. A webpage might load flawlessly on a fast connection in a clean browser environment, yet struggle significantly when accessed by a user on a 4G network from a mobile device in an urban area.
-
-      Field data, by contrast, captures real user experiences. Chrome User Experience Report (CrUX) data aggregates performance metrics from actual Chrome users, providing a window into how your site truly performs across diverse hardware, network, and geographic conditions.
-
-      ## Why Your Optimization Strategy Might Be Harming You
-
-      Many engineering teams, in their quest to achieve perfect Lighthouse scores, have begun optimizing specifically for synthetic metrics rather than for actual user experience. This has several unintended consequences:
-
-      ### 1. Premature Optimization
-      Chasing laboratory perfection before understanding real-world bottlenecks is a classic case of optimizing in the wrong order. A page might achieve a perfect Lighthouse score while still having significant field performance issues.
-
-      ### 2. Resource Misallocation
-      Development time spent optimizing synthetic metrics is time not spent solving actual user problems. If your field data shows users experiencing layout shift on mobile, but your lab tests show perfect CLS scores, you're solving the wrong problem.
-
-      ### 3. The JavaScript Paradox
-      Many teams have attempted to improve their Core Web Vitals by reducing JavaScript, only to find that their application becomes less functional and user engagement actually decreases. This represents a fundamental misunderstanding of what these metrics are designed to measure.
-
-      ## The Path Forward
-
-      Rather than optimizing for metrics, optimize for user experience. Here's how:
-
-      ### Prioritize Field Data
-      Make CrUX data your primary source of truth. Segment by device type, connection speed, and geography. Understand where your actual users are struggling.
-
-      ### Use Lab Data as Triage
-      Lighthouse should be used to identify potential problems, not as a measure of success. When field data shows poor performance, use synthetic testing to understand why.
-
-      ### Measure What Matters
-      Core Web Vitals are a proxy for user experience, not user experience itself. Consider measuring actual user engagement metrics alongside Core Web Vitals. Does a faster page lead to more conversions? More time on page?
-
-      ### Test Incrementally
-      Before deploying major changes, test them with a subset of users. This allows you to validate that your optimization actually improves field performance before committing to it site-wide.
-
-      ## Conclusion
-
-      The Core Web Vitals paradigm has matured beyond simple metric optimization. The most successful teams are those that view these metrics as starting points for investigation, not endpoints for optimization. By keeping field data at the center of your decision-making process, you'll build faster, more performant websites that users genuinely prefer.
-
-      The future of web performance optimization belongs to those who understand the distinction between measuring performance and improving it.
-    `
+            name: string;
+            title: string;
+            bio?: string;
+            avatar: string;
+        };
+        contentFormat: string;
+        content: string;
+        seo: {
+            metaTitle: string;
+            metaDescription: string;
+            keywords: string[];
+        };
     };
+    relatedPosts: Array<{
+        id: string;
+        slug: string;
+        title: string;
+        category: string;
+        publishedDate: string;
+        readTime: string;
+    }>;
+};
 
-    const relatedArticles = [
+const markdownComponents: ComponentProps<typeof ReactMarkdown>["components"] = {
+    h1: (props: ComponentProps<"h1">) => (
+        <h1 className="mb-4 mt-8 text-3xl font-bold" {...props} />
+    ),
+    h2: (props: ComponentProps<"h2">) => (
+        <h2 className="mb-3 mt-7 text-2xl font-semibold" {...props} />
+    ),
+    h3: (props: ComponentProps<"h3">) => (
+        <h3 className="mb-3 mt-6 text-xl font-semibold" {...props} />
+    ),
+    p: (props: ComponentProps<"p">) => (
+        <p className="mb-4 leading-7 text-muted-foreground" {...props} />
+    ),
+    ul: (props: ComponentProps<"ul">) => (
+        <ul className="mb-4 list-disc space-y-2 pl-6 text-muted-foreground" {...props} />
+    ),
+    ol: (props: ComponentProps<"ol">) => (
+        <ol className="mb-4 list-decimal space-y-2 pl-6 text-muted-foreground" {...props} />
+    ),
+    a: (props: ComponentProps<"a">) => (
+        <a className="text-primary underline underline-offset-4" {...props} />
+    ),
+    code: (props: ComponentProps<"code">) => (
+        <code className="rounded bg-muted px-1 py-0.5 text-sm" {...props} />
+    ),
+    blockquote: (props: ComponentProps<"blockquote">) => (
+        <blockquote className="my-6 border-l-2 border-border pl-4 italic" {...props} />
+    ),
+};
+
+// Hoist formatter — avoid recreating options object on every call
+const dateFmt = new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+});
+
+function formatPublishedDate(value: string) {
+    const d = new Date(value);
+    return Number.isNaN(d.getTime()) ? value : dateFmt.format(d);
+}
+
+function getBaseUrl() {
+    if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;
+    if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+    return "http://localhost:3001";
+}
+
+async function getBlogPost(slug: string) {
+    const response = await fetch(
+        `${getBaseUrl()}/api/blogs/slug/${encodeURIComponent(slug)}`,
         {
-            title: 'The Anatomy of a High-Converting Informational Query Page',
-            category: 'On-Page',
-            readTime: '6 min read',
-            date: 'Oct 08'
+            next: {
+                revalidate: 300,
+                // Enables on-demand revalidation via revalidateTag()
+                tags: [`blog-post-${slug}`],
+            },
         },
-        {
-            title: 'Advanced Schema.org Nesting: Building Relationships',
-            category: 'Markup',
-            readTime: '8 min read',
-            date: 'Sep 28'
-        },
-        {
-            title: 'Migrating to Next.js: The Pre-rendering Checklist for SEO',
-            category: 'Architecture',
-            readTime: '10 min read',
-            date: 'Oct 01'
-        }
-    ];
+    );
+
+    if (!response.ok) {
+        return null;
+    }
+
+    return (await response.json()) as BlogDetailResponse;
+}
+
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+    const seo = await getSeoPayload();
+    const metadata = buildMetadataFromSeo(seo, "blogs");
+    const { slug } = await params;
+    const payload = await getBlogPost(slug);
+
+    if (!payload) {
+        return metadata;
+    }
+
+    return {
+        ...metadata,
+        title: payload.post.seo.metaTitle || payload.post.title,
+        description: payload.post.seo.metaDescription || payload.post.excerpt,
+        keywords: payload.post.seo.keywords,
+    };
+}
+
+export default async function BlogPostPage({ params }: Params) {
+    const { slug } = await params;
+    const payload = await getBlogPost(slug);
+    if (!payload) {
+        notFound();
+    }
+
+    const { post, relatedPosts } = payload;
+
+    // Sanitize HTML content server-side to prevent XSS
+    const safeHtml =
+        post.contentFormat !== "markdown"
+            ? DOMPurify.sanitize(post.content)
+            : null;
 
     return (
         <div className="min-h-screen bg-background text-foreground">
-            {/* Header */}
+            {/*
+                Fixed: was mx-8 which pushed content off-center on mobile.
+                Use a consistent max-w + auto margins pattern instead.
+            */}
             <header className="sticky top-0 z-30 border-b border-border bg-background/95 backdrop-blur-sm">
-                <div className="max-w-4xl mx-8 px-2 sm:px-1 lg:px-4 py-3.5">
-                    <Link href="/" className="inline-flex items-center gap-2 text-emerald-500 hover:text-emerald-500/80 transition-colors text-sm font-medium">
+                <div className="mx-auto max-w-4xl px-4 py-3.5 sm:px-6 lg:px-8">
+                    <Link
+                        href={post.categorySlug ? `/${post.categorySlug}` : "/"}
+                        /*
+                            Fixed: was hardcoded text-emerald-500 which ignores
+                            design tokens and breaks in dark mode.
+                            Use text-primary from your theme instead.
+                        */
+                        className="inline-flex items-center gap-2 text-sm font-medium text-primary transition-colors hover:text-primary/80"
+                    >
                         <ArrowLeft size={18} />
-                        Back to Home
+                        Back to {post.category}
                     </Link>
                 </div>
             </header>
 
-            {/* Main Content */}
-            <main className="mx-2 px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-                {/* Article Header */}
-                <article className="space-y-6">
-                    {/* Category and Title */}
+            <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6 md:py-12 lg:px-8">
+                <article className="space-y-8">
                     <div className="space-y-6">
                         <div className="inline-flex items-center">
-                            <span className="text-xs uppercase tracking-widest text-emerald-500 font-bold bg-accent/10 px-3 py-1.5 rounded-full">
-                                {article.category}
+                            {/*
+                                Fixed: replaced hardcoded text-emerald-500
+                                with text-primary everywhere in this file.
+                            */}
+                            <span className="rounded-full bg-accent/10 px-3 py-1.5 text-xs font-bold uppercase tracking-widest text-primary">
+                                {post.category}
                             </span>
                         </div>
-                        <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-bold leading-tight text-pretty">
-                            {article.title}
+                        <h1 className="text-5xl font-serif font-bold leading-tight text-pretty md:text-6xl lg:text-7xl">
+                            {post.title}
                         </h1>
-                        <p className="text-xl md:text-2xl text-foreground/70 leading-relaxed text-pretty">
-                            {article.excerpt}
+                        <p className="text-xl leading-relaxed text-foreground/70 text-pretty md:text-2xl">
+                            {post.excerpt}
                         </p>
                     </div>
 
-                    {/* Article Meta */}
-                    <div className="flex flex-col md:flex-row md:items-center gap-6 md:gap-8 border-t border-b border-border py-6">
-                        {/* Author Info */}
+                    <div className="flex flex-col gap-6 border-y border-border py-6 md:flex-row md:items-center md:gap-8">
                         <div className="flex items-center gap-4">
-                            <Image
-                                fill
-                                src={article.author.avatar}
-                                alt={article.author.name}
-                                className="w-14 h-14 rounded-full object-cover border border-border"
-                            />
+                            {/* Fixed: added relative to parent so Image fill works correctly */}
+                            <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border border-border">
+                                <Image
+                                    fill
+                                    src={post.author.avatar}
+                                    alt={post.author.name}
+                                    className="object-cover"
+                                    sizes="56px"
+                                />
+                            </div>
                             <div>
-                                <p className="font-semibold text-foreground">{article.author.name}</p>
-                                <p className="text-sm text-muted-foreground">{article.author.title}</p>
+                                <p className="font-semibold text-foreground">{post.author.name}</p>
+                                <p className="text-sm text-muted-foreground">{post.author.title}</p>
                             </div>
                         </div>
 
-                        {/* Article Details */}
                         <div className="flex flex-wrap gap-6 md:gap-8">
                             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                <Calendar size={16} />
-                                <span>{article.publishedDate}</span>
+                                <Calendar size={16} aria-hidden="true" />
+                                <time dateTime={post.publishedDate}>
+                                    {formatPublishedDate(post.publishedDate)}
+                                </time>
                             </div>
                             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                <Clock size={16} />
-                                <span>{article.readTime}</span>
+                                <Clock size={16} aria-hidden="true" />
+                                <span>{post.readTime}</span>
                             </div>
                         </div>
                     </div>
 
-                    {/* Featured Image */}
-                    <div className="relative rounded-2xl overflow-hidden border border-border">
+                    {/*
+                        Fixed: replaced fixed h-96 with aspect-video so the hero
+                        image scales proportionally at all viewport widths.
+                        Added priority since this is always the LCP element.
+                    */}
+                    <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border">
                         <Image
                             fill
-                            src={article.image}
-                            alt={article.title}
-                            className="w-full h-96 object-cover"
+                            src={post.image}
+                            alt={post.title}
+                            className="object-cover"
+                            sizes="(max-width: 896px) 100vw, 896px"
+                            priority
                         />
                     </div>
 
-                    {/* Article Body */}
-                    <div className="prose prose-invert max-w-none">
-                        <div className="space-y-8 text-lg text-foreground/80 leading-relaxed">
-                            {article.content.split('\n\n').map((paragraph, idx) => {
-                                if (paragraph.trim().startsWith('##')) {
-                                    return (
-                                        <h2 key={idx} className="text-3xl font-serif font-bold text-foreground mt-12 mb-6">
-                                            {paragraph.trim().replace('## ', '')}
-                                        </h2>
-                                    );
-                                }
-                                if (paragraph.trim().startsWith('###')) {
-                                    return (
-                                        <h3 key={idx} className="text-2xl font-serif font-bold text-foreground mt-8 mb-4">
-                                            {paragraph.trim().replace('### ', '')}
-                                        </h3>
-                                    );
-                                }
-                                return paragraph.trim() && <p key={idx} className="text-foreground/80 leading-relaxed">{paragraph.trim()}</p>;
-                            })}
+                    {post.contentFormat === "markdown" ? (
+                        <div className="prose prose-neutral max-w-none">
+                            <ReactMarkdown
+                                remarkPlugins={[remarkGfm]}
+                                components={markdownComponents}
+                            >
+                                {post.content}
+                            </ReactMarkdown>
                         </div>
-                    </div>
+                    ) : (
+                        /*
+                            Fixed: raw dangerouslySetInnerHTML is an XSS vector
+                            if your CMS content is ever compromised or user-influenced.
+                            safeHtml is DOMPurify-sanitized above before render.
+                        */
+                        <div
+                            className="prose prose-neutral max-w-none"
+                            dangerouslySetInnerHTML={{ __html: safeHtml ?? "" }}
+                        />
+                    )}
 
-                    {/* Article Footer */}
-                    <div className="border-t border-border pt-8 space-y-6">
-                        {/* Tags/Categories */}
-                        <div className="flex flex-wrap gap-2">
-                            {['Core Web Vitals', 'SEO', 'Performance', 'Engineering'].map((tag) => (
-                                <span key={tag} className="px-3 py-1 rounded-full bg-muted/40 text-sm text-foreground/70 border border-border hover:border-accent/30 transition-colors cursor-pointer">
-                                    {tag}
-                                </span>
-                            ))}
-                        </div>
-
-                        {/* Author Bio */}
-                        <Card className="p-6 border border-border rounded-xl bg-muted/40">
+                    {/*
+                        Fixed: author card previously had name + title but no bio,
+                        leaving an awkward empty space. Now shows bio when available,
+                        and collapses cleanly when absent.
+                    */}
+                    <div className="border-t border-border pt-8">
+                        <Card className="rounded-xl border border-border bg-muted/40 p-6">
                             <div className="flex gap-4">
-                                <Image
-                                    src={article.author.avatar}
-                                    alt={article.author.name}
-                                    fill
-                                    className="w-16 h-16 rounded-full object-cover border border-border shrink-0"
-                                />
+                                <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full border border-border">
+                                    <Image
+                                        src={post.author.avatar}
+                                        alt={post.author.name}
+                                        fill
+                                        className="object-cover"
+                                        sizes="64px"
+                                    />
+                                </div>
                                 <div className="flex-1">
-                                    <h3 className="font-semibold text-foreground mb-1">{article.author.name}</h3>
-                                    <p className="text-sm text-muted-foreground mb-3">{article.author.title}</p>
-                                    <p className="text-sm text-foreground/70 leading-relaxed">
-                                        A seasoned technical SEO expert with over a decade of experience optimizing large-scale enterprise websites. Specializing in Core Web Vitals, structured data, and JavaScript framework optimization.
-                                    </p>
+                                    <p className="font-semibold text-foreground">{post.author.name}</p>
+                                    <p className="mb-2 text-sm text-muted-foreground">{post.author.title}</p>
+                                    {post.author.bio && (
+                                        <p className="text-sm leading-relaxed text-foreground/70">
+                                            {post.author.bio}
+                                        </p>
+                                    )}
                                 </div>
                             </div>
                         </Card>
@@ -212,58 +297,53 @@ export default function BlogArticle() {
                 </article>
             </main>
 
-            {/* Related Articles Section */}
-            <section className="border-t border-border bg-muted/20 py-5">
-                <div className="mx-4 px-4 sm:px-1 lg:px-8">
-                    <h2 className="text-4xl font-serif font-bold text-foreground mb-12">Related Articles</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {relatedArticles.map((article, idx) => (
-                            <Card
-                                key={idx}
-                                className="group p-6 border border-border rounded-xl hover:border-accent/30 hover:shadow-xl hover:shadow-accent/5 transition-all duration-300 cursor-pointer bg-card/50 backdrop-blur-sm"
-                            >
-                                <div className="space-y-4">
-                                    <span className="inline-block text-xs uppercase tracking-widest text-emerald-500 font-bold bg-accent/10 px-2.5 py-1 rounded-full">
-                                        {article.category}
-                                    </span>
-                                    <h3 className="text-lg font-serif font-bold text-foreground group-hover:text-emerald-500 transition-colors line-clamp-2">
-                                        {article.title}
-                                    </h3>
-                                    <div className="flex items-center gap-4 text-sm text-muted-foreground pt-4 border-t border-border">
-                                        <span>{article.date}</span>
-                                        <span>•</span>
-                                        <span>{article.readTime}</span>
-                                    </div>
-                                </div>
-                            </Card>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* CTA Section */}
-            <section className="py-10 px-4 sm:px-2 lg:px-8">
-                <div className="max-w-4xl mx-auto">
-                    <Card className="p-6 md:p-10 border border-border rounded-2xl bg-linear-to-br from-accent/5 to-accent/10 text-center">
-                        <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-4">
-                            Stay Updated with Expert Insights
+            {relatedPosts.length > 0 && (
+                /*
+                    Fixed: was py-5 (20px) with mb-12 on h2 — disproportionate.
+                    Now py-12 on the section with mb-8 on the heading.
+                */
+                <section
+                    className="border-t border-border bg-muted/20 py-12"
+                    aria-labelledby="related-heading"
+                >
+                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                        <h2
+                            id="related-heading"
+                            className="mb-8 text-4xl font-serif font-bold text-foreground"
+                        >
+                            Related Articles
                         </h2>
-                        <p className="text-lg text-foreground/70 mb-8 max-w-xl mx-auto">
-                            Join 15,000+ professionals receiving our weekly analysis of industry trends and technical deep dives.
-                        </p>
-                        <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                            <input
-                                type="email"
-                                placeholder="Enter your email"
-                                className="flex-1 px-6 py-3 rounded-lg border border-border bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all text-center sm:text-left"
-                            />
-                            <Button className="bg-foreground text-background hover:bg-foreground/90 transition-colors font-medium">
-                                Subscribe
-                            </Button>
+                        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+                            {relatedPosts.map((related) => (
+                                <Link key={related.id} href={`/blogs/${related.slug}`}>
+                                    <Card className="group cursor-pointer rounded-xl border border-border bg-card/50 p-6 transition-all duration-300 hover:border-accent/30 hover:shadow-xl hover:shadow-accent/5">
+                                        <div className="space-y-4">
+                                            <span className="inline-block rounded-full bg-accent/10 px-2.5 py-1 text-xs font-bold uppercase tracking-widest text-primary">
+                                                {related.category}
+                                            </span>
+                                            <h3 className="line-clamp-2 text-lg font-serif font-bold text-foreground transition-colors group-hover:text-primary">
+                                                {related.title}
+                                            </h3>
+                                            <div className="flex items-center gap-4 border-t border-border pt-4 text-sm text-muted-foreground">
+                                                <time dateTime={related.publishedDate}>
+                                                    {formatPublishedDate(related.publishedDate)}
+                                                </time>
+                                                <span aria-hidden="true">|</span>
+                                                <span>{related.readTime}</span>
+                                                <ArrowRight
+                                                    size={16}
+                                                    className="ml-auto"
+                                                    aria-hidden="true"
+                                                />
+                                            </div>
+                                        </div>
+                                    </Card>
+                                </Link>
+                            ))}
                         </div>
-                    </Card>
-                </div>
-            </section>
+                    </div>
+                </section>
+            )}
         </div>
     );
 }

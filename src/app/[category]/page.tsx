@@ -119,7 +119,7 @@ export default async function Page({ params }: Params) {
                         {payload.posts.map((article, idx) => (
                             <Link
                                 key={article.id}
-                                href={`/blogs/${article.slug}`}
+                                href={`/${category}/${article.slug}`}
                                 className="group"
                                 aria-label={`Read: ${article.title}`}
                             >
