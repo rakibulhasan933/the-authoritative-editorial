@@ -3,6 +3,9 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // React Compiler for performance optimization
   reactCompiler: true,
+  htmlLimitedBots: /.*/,
+  serverExternalPackages: ['jsdom'],
+
   // Image optimization configuration
   images: {
     remotePatterns: [
