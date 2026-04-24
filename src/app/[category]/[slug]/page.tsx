@@ -11,7 +11,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import DOMPurify from "isomorphic-dompurify";
+import sanitizeHtml from "sanitize-html";
 import { Card } from "@/components/ui/card";
 import { buildMetadataFromSeo, getSeoPayload } from "@/lib/seo-api";
 
@@ -112,24 +112,24 @@ async function getBlogPost(slug: string, category: string): Promise<BlogDetailRe
     return (await response.json()) as BlogDetailResponse;
 }
 
-// export async function generateMetadata({ params }: Params): Promise<Metadata> {
-//     const seo = await getSeoPayload();
-//     const { slug, category } = await params;
-//     // const metadata = buildMetadataFromSeo(seo, "blogs");
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+    const seo = await getSeoPayload();
+    const { slug, category } = await params;
+    const metadata = buildMetadataFromSeo(seo, "blogs");
 
-//     const payload = await getBlogPost(slug, category);
+    const payload = await getBlogPost(slug, category);
 
-//     if (!payload) {
-//         return metadata;
-//     }
+    if (!payload) {
+        return metadata;
+    }
 
-//     return {
-//         ...metadata,
-//         title: payload.post.seo.metaTitle || payload.post.title,
-//         description: payload.post.seo.metaDescription || payload.post.excerpt,
-//         keywords: payload.post.seo.keywords,
-//     };
-// }
+    return {
+        ...metadata,
+        title: payload.post.seo.metaTitle || payload.post.title,
+        description: payload.post.seo.metaDescription || payload.post.excerpt,
+        keywords: payload.post.seo.keywords,
+    };
+}
 
 export default async function BlogPostPage({ params }: Params) {
     const data = await params;
@@ -142,10 +142,9 @@ export default async function BlogPostPage({ params }: Params) {
     const { post, relatedPosts } = payload;
 
     // Sanitize HTML content server-side to prevent XSS
-    const safeHtml =
-        post.contentFormat !== "markdown"
-            ? DOMPurify.sanitize(post.content)
-            : null;
+    const safeHtml = post.contentFormat !== "markdown"
+        ? sanitizeHtml(post.content)
+        : null;
 
     return (
         <div className="min-h-screen bg-background text-foreground">
