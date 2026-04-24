@@ -12,7 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function Home() {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/homepage`, {
-    next: { revalidate: process.env.NEXT_PUBLIC_REVALIDATE_INTERVAL ? parseInt(process.env.NEXT_PUBLIC_REVALIDATE_INTERVAL) : 300 },
+    next: { revalidate: 0 },
   });
   if (!response.ok) {
     throw new Error("Failed to fetch homepage data");
